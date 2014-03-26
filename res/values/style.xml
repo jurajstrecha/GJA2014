@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+	<!-- Colors -->
+	<!--<color name="background">#FEFEFF</color>-->
+	
+	<!-- Putting it together -->
+	<style name="Theme.TwitterClient" parent="android:style/Theme.Holo.Light"></style>
+
+</resources>

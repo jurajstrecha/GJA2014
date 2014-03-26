@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TwitterClient</string>
+	
+	<!-- Generic messages -->
+	<string name="msg_no_connection">No connection available</string>
+	
+	<!-- Login -->
+	<string name="input_login">Login</string>
+	<string name="input_password">Password</string>
+	<string name="button_login">Login</string>
+	
+	<string name="progress_login_title">Logging in</string>
+	<string name="progress_login">Logging you right in&#8230;</string>
+	
+	
+</resources>
