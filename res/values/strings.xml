@@ -25,5 +25,11 @@
 	<string name="title_account">Account</string>
 	<string name="title_settings">Settings</string>
 	
+	<!-- Account -->
+	<string name="account_name">Name</string>
+	<string name="account_location">Location</string>
+	<string name="account_website">Website</string>
+	<string name="account_bio">Bio</string>
+	
 	
 </resources>

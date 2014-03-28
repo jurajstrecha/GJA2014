@@ -3,10 +3,62 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-	android:gravity="center"
+	android:padding="20dp"
     >
 		
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/account_name"
+		/>
+	
+	<EditText
+		android:id="@+id/account_name"
+		android:inputType="textCapWords"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		/>
 	
 	
-</LinearLayout>
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/account_location"
+		/>
+	
+	<EditText
+		android:id="@+id/account_location"
+		android:inputType="text"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		/>
+	
+	
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/account_website"
+		/>
+	
+	<EditText
+		android:id="@+id/account_website"
+		android:inputType="text"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		/>
+	
+	
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/account_bio"
+		/>
+	
+	<EditText
+		android:id="@+id/account_bio"
+		android:inputType="text"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		/>
 
+</LinearLayout>

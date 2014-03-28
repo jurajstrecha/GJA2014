@@ -39,7 +39,7 @@ public class LoginActivity extends BaseActivity
 				}
 			});
 		}
-	}	
+	}
 	
 	public void doLogin(String login, String password) {
 		final Activity loginActivity = this;
