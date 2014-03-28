@@ -16,10 +16,10 @@ public class LoginActivity extends BaseActivity
     {		
 		super.onCreate(savedInstanceState);
 		// TEST
-		/*if( false && isLoggedIn() ) {
+		if( false && isLoggedIn() ) {
 			startActivity(new Intent(this, TimelineActivity.class));
 			finish();
-		}*/
+		}
 		
         setContentView(R.layout.login);
 		initializeLoginForm();

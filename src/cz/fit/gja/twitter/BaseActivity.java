@@ -15,10 +15,7 @@ abstract public class BaseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		if( isNetworkAvailable() == false ) {
-			Toast networkWarning = new Toast(this);
-			networkWarning.setDuration(Toast.LENGTH_LONG);
-			networkWarning.setText(R.string.msg_no_connection);
-			networkWarning.show();
+			Toast.makeText(this, R.string.msg_no_connection, Toast.LENGTH_LONG).show();
 		}
     }
 	
