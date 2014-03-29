@@ -10,10 +10,10 @@
 		android:orientation="horizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:paddingBottom="20dp"
+		android:paddingBottom="15dp"
 		>
 		
-		<ImageView
+		<ImageButton
 			android:id="@+id/select_image"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
 			android:paddingRight="20dp"
 			/>
 
-		<ImageView
+		<ImageButton
 			android:id="@+id/camera"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
 			android:paddingRight="20dp"
 			/>
 		
-		<ImageView
+		<ImageButton
 			android:id="@+id/location"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -59,9 +59,18 @@
 	<EditText
 		android:id="@+id/tweet"
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_height="wrap_content"
 		android:inputType="textMultiLine"
+		android:minLines="3"
 		android:gravity="top"
+		/>
+	
+	<ImageView
+		android:id="@+id/thumbnail"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="35dp"
+		android:contentDescription="@string/tweet_thumbnail"
 		/>
 	
 </LinearLayout>

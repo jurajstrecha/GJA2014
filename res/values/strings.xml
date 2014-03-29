@@ -37,6 +37,10 @@
 	<string name="tweet_camera">Take a photo</string>
 	<string name="tweet_location">Allow adding location</string>
 	<string name="tweet_submit">Tweet</string>
+	<string name="tweet_thumbnail">No image added</string>
+	
+	<string name="tweet_thumbnail_dialog">Attached image</string>
+	<string name="tweet_thumbnail_clear">Remove image</string>
 	
 	
 </resources>
