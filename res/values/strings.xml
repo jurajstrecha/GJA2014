@@ -14,7 +14,7 @@
 	<string name="progress_login">Logging you right in&#8230;</string>
 	
 	<!-- Main menu -->
-	<string name="action_new_tweet">Tweet</string>
+	<string name="action_new_tweet">New Tweet</string>
 	<string name="action_account">Account</string>
 	<string name="action_settings">Settings</string>
 	<string name="action_logout">Logout</string>
@@ -30,6 +30,13 @@
 	<string name="account_location">Location</string>
 	<string name="account_website">Website</string>
 	<string name="account_bio">Bio</string>
+	
+	<!-- New Tweet -->
+	<string name="tweet_multimedia_title">Add multimedia / location</string>
+	<string name="tweet_select_image">Select image</string>
+	<string name="tweet_camera">Take a photo</string>
+	<string name="tweet_location">Allow adding location</string>
+	<string name="tweet_submit">Tweet</string>
 	
 	
 </resources>

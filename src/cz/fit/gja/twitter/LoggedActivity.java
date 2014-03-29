@@ -26,7 +26,6 @@ abstract public class LoggedActivity extends BaseActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				Intent intent = new Intent(this, TimelineActivity.class);

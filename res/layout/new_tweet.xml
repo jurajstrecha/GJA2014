@@ -3,10 +3,66 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-	android:gravity="center"
+	android:padding="20dp"
     >
-		
 	
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingBottom="20dp"
+		>
+		
+		<ImageView
+			android:id="@+id/select_image"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/select_image"
+			android:contentDescription="@string/tweet_select_image"
+			android:layout_alignParentTop="true"
+			android:paddingRight="20dp"
+			/>
+
+		<ImageView
+			android:id="@+id/camera"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/camera"
+			android:contentDescription="@string/tweet_camera"
+			android:layout_alignParentTop="true"
+			android:layout_toRightOf="@id/select_image"
+			android:paddingRight="20dp"
+			/>
+		
+		<ImageView
+			android:id="@+id/location"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/location"
+			android:contentDescription="@string/tweet_location"
+			android:layout_alignParentTop="true"
+			android:layout_toRightOf="@id/camera"
+			android:paddingRight="20dp"
+			/>
+		
+		<TextView
+			android:id="@+id/characters_remaining"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:text="140"
+			android:gravity="right"
+			/>
+		
+	</RelativeLayout>
+	
+	<EditText
+		android:id="@+id/tweet"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:inputType="textMultiLine"
+		android:gravity="top"
+		/>
 	
 </LinearLayout>
 

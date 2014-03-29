@@ -14,9 +14,9 @@ abstract public class BaseActivity extends Activity {
     {		
 		super.onCreate(savedInstanceState);
 		
-		if( isNetworkAvailable() == false ) {
+		/*if( isNetworkAvailable() == false ) {
 			Toast.makeText(this, R.string.msg_no_connection, Toast.LENGTH_LONG).show();
-		}
+		}*/
     }
 	
 	protected boolean isLoggedIn() {
