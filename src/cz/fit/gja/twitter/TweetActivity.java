@@ -3,6 +3,7 @@ package cz.fit.gja.twitter;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -11,23 +12,29 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import cz.fit.gja.twitter.dialogs.ThumbnailDialog;
+import cz.fit.gja.twitter.model.TweetPoster;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TweetActivity extends LoggedActivity
 {
 	static final int THUMBNAIL_SIZE = 160;
 	static final int REQUEST_IMAGE_CAPTURE = 1;
+	static final int REQUEST_IMAGE_SELECT = 2;
 	
 	String tweet = "";
+	Bitmap attachedImage;
+	String replyToId;
+	
 	EditText textarea;
 	ImageView thumbnail;
-	Bitmap attachedImage;
 	
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -38,9 +45,10 @@ public class TweetActivity extends LoggedActivity
 		if( savedInstanceState != null ) {
 			attachedImage = savedInstanceState.getParcelable("image");
 			tweet = savedInstanceState.getString("tweet");
+			replyToId = savedInstanceState.getString("replyTo");
 		}
 		
-		setTitle(R.string.title_tweet);
+		setTitle(replyToId == null ? R.string.title_tweet : R.string.title_tweet_reply);
 		initializeForm();
 	}
 	
@@ -62,6 +70,13 @@ public class TweetActivity extends LoggedActivity
 			});
 			
 			// Buttons
+			ImageButton gallery = (ImageButton)content.findViewById(R.id.select_image);
+			gallery.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View view) {
+					buttonGallery();
+				}
+			});
+			
 			ImageButton camera = (ImageButton)content.findViewById(R.id.camera);
 			camera.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View view) {
@@ -79,6 +94,8 @@ public class TweetActivity extends LoggedActivity
 					public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) {}
 					public void onTextChanged(CharSequence cs, int i, int i1, int i2) {}
 					public void afterTextChanged(Editable edtbl) {
+						tweet = edtbl.toString();
+						
 						Integer remaining = 140 - edtbl.length();
 						limit.setText(remaining.toString());
 						
@@ -96,6 +113,13 @@ public class TweetActivity extends LoggedActivity
 		}
     }
 	
+	private void buttonGallery() {
+		Intent intent = new Intent();
+		intent.setType("image/*");
+		intent.setAction(Intent.ACTION_GET_CONTENT);
+		startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_IMAGE_SELECT);
+	}
+	
 	private void buttonCamera() {
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -105,10 +129,23 @@ public class TweetActivity extends LoggedActivity
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && thumbnail != null) {
+		if( resultCode != RESULT_OK ) {
+			// log? toast?
+			return;
+		}
+		
+		if (requestCode == REQUEST_IMAGE_CAPTURE && thumbnail != null) {
 			Bundle extras = data.getExtras();
 			attachedImage = (Bitmap) extras.get("data");
 			setThumbnail(attachedImage);
+		} else if( requestCode == REQUEST_IMAGE_SELECT && thumbnail != null ) {
+			Uri selectedImageUri = data.getData();
+			try {
+				attachedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+				setThumbnail(attachedImage);
+			} catch (IOException ex) {
+				Logger.getLogger(TweetActivity.class.getName()).log(Level.SEVERE, null, ex);
+			}
 		}
 	}
 	
@@ -163,8 +200,17 @@ public class TweetActivity extends LoggedActivity
 		}
 	}
 	
-	private void saveTweet() {
-		Toast.makeText(this, "Tweet saved [test]", Toast.LENGTH_LONG).show();
+	private void saveTweet() {	
+		TweetPoster poster = new TweetPoster(null, tweet);
+		if( attachedImage != null ) {
+			poster.setImage(attachedImage);
+		}
+		if( replyToId != null ) {
+			poster.setIsReplyTo(replyToId);
+		}
+		poster.commit();
+		
+		Toast.makeText(this, "Tweet saved [debug]", Toast.LENGTH_LONG).show();
 		startActivity(new Intent(this, TimelineActivity.class));
 		finish();
 	}

@@ -4,8 +4,8 @@
           android:title="@string/action_new_tweet" />
     <item android:id="@+id/action_account"
           android:title="@string/action_account"/>
-    <item android:id="@+id/action_settings"
-          android:title="@string/action_settings" />
+    <item android:id="@+id/action_favorites"
+          android:title="@string/action_favorites" />
 	<item android:id="@+id/action_logout"
           android:title="@string/action_logout" />
 </menu>

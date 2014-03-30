@@ -34,17 +34,6 @@
 			android:paddingRight="20dp"
 			/>
 		
-		<ImageButton
-			android:id="@+id/location"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/location"
-			android:contentDescription="@string/tweet_location"
-			android:layout_alignParentTop="true"
-			android:layout_toRightOf="@id/camera"
-			android:paddingRight="20dp"
-			/>
-		
 		<TextView
 			android:id="@+id/characters_remaining"
 			android:layout_width="wrap_content"
