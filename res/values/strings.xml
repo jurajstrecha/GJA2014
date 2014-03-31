@@ -43,6 +43,7 @@
 	
 	<string name="tweet_thumbnail_dialog">Attached image</string>
 	<string name="tweet_thumbnail_clear">Remove image</string>
+	<string name="tweet_hint">Compose new Tweet...</string>
 	
 	
 </resources>

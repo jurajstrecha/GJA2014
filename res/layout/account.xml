@@ -1,64 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-	android:padding="20dp"
-    >
-		
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/account_name"
-		/>
-	
-	<EditText
-		android:id="@+id/account_name"
-		android:inputType="textCapWords"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		/>
-	
-	
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/account_location"
-		/>
-	
-	<EditText
-		android:id="@+id/account_location"
-		android:inputType="text"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		/>
-	
-	
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/account_website"
-		/>
-	
-	<EditText
-		android:id="@+id/account_website"
-		android:inputType="text"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		/>
-	
-	
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/account_bio"
-		/>
-	
-	<EditText
-		android:id="@+id/account_bio"
-		android:inputType="text"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		/>
+    android:orientation="vertical"
+    android:padding="20dp" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/account_name" />
+
+    <EditText
+        android:id="@+id/account_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textCapWords" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/account_location" />
+
+    <EditText
+        android:id="@+id/account_location"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/account_website" />
+
+    <EditText
+        android:id="@+id/account_website"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/account_bio" />
+
+    <EditText
+        android:id="@+id/account_bio"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
 
 </LinearLayout>

@@ -1,66 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-	android:padding="20dp"
-    >
-	
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="horizontal"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:paddingBottom="15dp"
-		>
-		
-		<ImageButton
-			android:id="@+id/select_image"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/select_image"
-			android:contentDescription="@string/tweet_select_image"
-			android:layout_alignParentTop="true"
-			android:paddingRight="20dp"
-			/>
+    android:gravity="right"
+    android:orientation="vertical"
+    android:padding="20dp" >
 
-		<ImageButton
-			android:id="@+id/camera"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/camera"
-			android:contentDescription="@string/tweet_camera"
-			android:layout_alignParentTop="true"
-			android:layout_toRightOf="@id/select_image"
-			android:paddingRight="20dp"
-			/>
-		
-		<TextView
-			android:id="@+id/characters_remaining"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
-			android:text="140"
-			android:gravity="right"
-			/>
-		
-	</RelativeLayout>
-	
-	<EditText
-		android:id="@+id/tweet"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:inputType="textMultiLine"
-		android:minLines="3"
-		android:gravity="top"
-		/>
-	
-	<ImageView
-		android:id="@+id/thumbnail"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:paddingTop="35dp"
-		android:contentDescription="@string/tweet_thumbnail"
-		/>
-	
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="15dp" >
+
+        <ImageButton
+            android:id="@+id/select_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/tweet_select_image"
+            android:paddingRight="20dp"
+            android:src="@drawable/select_image" />
+
+        <ImageButton
+            android:id="@+id/camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/select_image"
+            android:contentDescription="@string/tweet_camera"
+            android:paddingRight="20dp"
+            android:src="@drawable/camera" />
+
+        <TextView
+            android:id="@+id/characters_remaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:text="140" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/tweet"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:hint="@string/tweet_hint"
+        android:inputType="textMultiLine"
+        android:minLines="3" />
+
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/tweet_thumbnail"
+        android:paddingTop="35dp" />
+
 </LinearLayout>
-
