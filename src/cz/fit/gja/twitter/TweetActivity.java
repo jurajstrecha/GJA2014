@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TweetActivity extends LoggedActivity {
+
     static final int THUMBNAIL_SIZE        = 160;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_IMAGE_SELECT  = 2;
@@ -61,6 +62,7 @@ public class TweetActivity extends LoggedActivity {
             }
 
             thumbnail.setOnClickListener(new View.OnClickListener() {
+
                 public void onClick(View view) {
                     ThumbnailDialog dialog = new ThumbnailDialog();
                     dialog.show(getFragmentManager(), "thumbnail");
@@ -70,6 +72,7 @@ public class TweetActivity extends LoggedActivity {
             // Buttons
             ImageButton gallery = (ImageButton) content.findViewById(R.id.select_image);
             gallery.setOnClickListener(new View.OnClickListener() {
+
                 public void onClick(View view) {
                     buttonGallery();
                 }
@@ -77,6 +80,7 @@ public class TweetActivity extends LoggedActivity {
 
             ImageButton camera = (ImageButton) content.findViewById(R.id.camera);
             camera.setOnClickListener(new View.OnClickListener() {
+
                 public void onClick(View view) {
                     buttonCamera();
                 }
@@ -89,6 +93,7 @@ public class TweetActivity extends LoggedActivity {
 
             if (textarea != null && limit != null) {
                 textarea.addTextChangedListener(new TextWatcher() {
+
                     public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) {
                     }
 
@@ -143,8 +148,7 @@ public class TweetActivity extends LoggedActivity {
         } else if (requestCode == REQUEST_IMAGE_SELECT && thumbnail != null) {
             Uri selectedImageUri = data.getData();
             try {
-                attachedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(),
-                        selectedImageUri);
+                attachedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                 setThumbnail(attachedImage);
             } catch (IOException ex) {
                 Logger.getLogger(TweetActivity.class.getName()).log(Level.SEVERE, null, ex);
@@ -161,11 +165,9 @@ public class TweetActivity extends LoggedActivity {
             thumbnail.setImageBitmap(imageBitmap);
             if (thumbnail.getLayoutParams().width < thumbnail.getLayoutParams().height) {
                 thumbnail.getLayoutParams().width = THUMBNAIL_SIZE;
-                thumbnail.getLayoutParams().height = (int) ((float) imageBitmap.getHeight() * (THUMBNAIL_SIZE / (float) imageBitmap
-                        .getWidth()));
+                thumbnail.getLayoutParams().height = (int) ((float) imageBitmap.getHeight() * (THUMBNAIL_SIZE / (float) imageBitmap.getWidth()));
             } else {
-                thumbnail.getLayoutParams().width = (int) ((float) imageBitmap.getWidth() * (THUMBNAIL_SIZE / (float) imageBitmap
-                        .getHeight()));
+                thumbnail.getLayoutParams().width = (int) ((float) imageBitmap.getWidth() * (THUMBNAIL_SIZE / (float) imageBitmap.getHeight()));
                 thumbnail.getLayoutParams().height = THUMBNAIL_SIZE;
             }
         } else {

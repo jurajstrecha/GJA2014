@@ -2,6 +2,7 @@ package cz.fit.gja.twitter;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +13,6 @@ abstract public class LoggedActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(true);
     }
@@ -37,6 +37,10 @@ abstract public class LoggedActivity extends BaseActivity {
             return true;
         case R.id.action_account:
             startActivity(new Intent(this, AccountActivity.class));
+            return true;
+        case R.id.action_logout:
+            logoutFromTwitter();
+            startActivity(new Intent(this, LoginActivity.class));
             return true;
         default:
             return super.onOptionsItemSelected(item);
