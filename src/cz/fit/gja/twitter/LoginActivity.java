@@ -39,11 +39,11 @@ public class LoginActivity extends BaseActivity {
 
             AccessToken accessToken = new AccessToken(access_token, access_token_secret);
             twitter = new TwitterFactory(builder.build()).getInstance(accessToken);
-            long userID = accessToken.getUserId();
+            userId = accessToken.getUserId();
             User user;
             // Check login (tokens)
             try {
-                user = twitter.showUser(userID);
+                user = twitter.showUser(userId);
                 Log.d("twitter UserName", user.getName());
                 startActivity(new Intent(this, TimelineActivity.class));
                 finish();                

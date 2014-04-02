@@ -22,6 +22,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 abstract public class BaseActivity extends Activity {
 
@@ -46,6 +48,7 @@ abstract public class BaseActivity extends Activity {
     // Twitter
     protected static Twitter twitter;
     protected static RequestToken requestToken;
+	protected static Long userId;
      
     // Shared Preferences
     protected static SharedPreferences mSharedPreferences;    
@@ -187,6 +190,7 @@ abstract public class BaseActivity extends Activity {
 
             try {
                 requestToken = twitter.getOAuthRequestToken(TWITTER_CALLBACK_URL);
+				userId = twitter.getId();
                 this.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL())));
                 finish();
 
@@ -195,7 +199,6 @@ abstract public class BaseActivity extends Activity {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         } else {
-            // user already logged into twitter
             Toast.makeText(this, "Already Logged into twitter", Toast.LENGTH_LONG).show();
             finish();
         }

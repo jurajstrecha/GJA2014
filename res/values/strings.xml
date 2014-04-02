@@ -33,6 +33,10 @@
     <string name="account_location">Location</string>
     <string name="account_website">Website</string>
     <string name="account_bio">Bio</string>
+	<string name="account_submit">Save</string>
+	
+	<string name="account_msg_update_failed">Updating user profile failed</string>
+	<string name="account_msg_fetch_failed">Loading user profile failed</string>
 
     <!-- New Tweet -->
     <string name="tweet_multimedia_title">Add multimedia / location</string>
