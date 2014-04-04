@@ -3,7 +3,6 @@ package cz.fit.gja.twitter;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
@@ -18,12 +17,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.text.Html;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 abstract public class BaseActivity extends Activity {
 
@@ -190,7 +185,7 @@ abstract public class BaseActivity extends Activity {
 
             try {
                 requestToken = twitter.getOAuthRequestToken(TWITTER_CALLBACK_URL);
-				userId = twitter.getId();
+				//userId = twitter.getId(); // Tohle tu být asi nemůže, protože není uživatel ještě autentifikován
                 this.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL())));
                 finish();
 

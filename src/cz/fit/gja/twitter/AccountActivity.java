@@ -22,7 +22,7 @@ public class AccountActivity extends LoggedActivity {
     EditText location;
     EditText website;
     EditText description;
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +37,9 @@ public class AccountActivity extends LoggedActivity {
         View currentView = this.findViewById(android.R.id.content);
 
         Map<String, String> accountData = getAccountData();
-		if( accountData == null ) {
-			return;
-		}
+        if (accountData == null) {
+            return;
+        }
 
         name = (EditText) currentView.findViewById(R.id.account_name);
         name.setText(accountData.get("name"), TextView.BufferType.NORMAL);
@@ -55,30 +55,32 @@ public class AccountActivity extends LoggedActivity {
     }
 
     private Map<String, String> getAccountData() {
-		if( userId == null ) {
-			Toast.makeText(this, getString(R.string.account_msg_fetch_failed), Toast.LENGTH_LONG).show();
-			return null;
-		}
-		
+        if (userId == null) {
+            Toast.makeText(this, getString(R.string.account_msg_fetch_failed), Toast.LENGTH_LONG)
+                 .show();
+            return null;
+        }
+
         Map<String, String> accountData = new HashMap<String, String>();
 
         try {
             User user = twitter.showUser(userId);
-            
-			accountData.put("name", user.getName());
-			accountData.put("location", user.getLocation());
-			accountData.put("website", user.getURL());
-			accountData.put("description", user.getDescription());
+
+            accountData.put("name", user.getName());
+            accountData.put("location", user.getLocation());
+            accountData.put("website", user.getURL());
+            accountData.put("description", user.getDescription());
         } catch (TwitterException ex) {
-			Toast.makeText(this, getString(R.string.account_msg_fetch_failed), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.account_msg_fetch_failed), Toast.LENGTH_LONG)
+                 .show();
             Logger.getLogger(AccountActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return accountData;
 
     }
-	
-	@Override
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.account_menu, menu);
@@ -95,20 +97,17 @@ public class AccountActivity extends LoggedActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-    
+
     private void submit() {
         try {
-            twitter.updateProfile(
-                name.getText().toString(),
-                location.getText().toString(),
-                website.getText().toString(),
-                description.getText().toString()
-            );
-			
-			startActivity(new Intent(this, TimelineActivity.class));
-			finish();
+            twitter.updateProfile(name.getText().toString(), website.getText().toString(),
+                                  location.getText().toString(), description.getText().toString());
+
+            startActivity(new Intent(this, TimelineActivity.class));
+            finish();
         } catch (TwitterException ex) {
-            Toast.makeText(this, getString(R.string.account_msg_update_failed), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.account_msg_update_failed), Toast.LENGTH_LONG)
+                 .show();
             Logger.getLogger(AccountActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
