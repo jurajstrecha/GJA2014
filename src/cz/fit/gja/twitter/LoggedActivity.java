@@ -76,6 +76,12 @@ abstract public class LoggedActivity extends BaseActivity {
         case R.id.action_new_tweet:
             startActivity(new Intent(this, TweetActivity.class));
             return true;
+		case R.id.action_following:
+            startActivity(new Intent(this, FollowingActivity.class));
+            return true;
+		/*case R.id.action_followers:
+            startActivity(new Intent(this, FollowersActivity.class));
+            return true;*/
         case R.id.action_account:
             startActivity(new Intent(this, AccountActivity.class));
             return true;
