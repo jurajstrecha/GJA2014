@@ -38,6 +38,7 @@ public class TweetActivity extends LoggedActivity {
     String           tweet                 = "";
     Bitmap           attachedImage;
     Long             replyToId;
+	String           replyToText;
 
     EditText         textarea;
     ImageView        thumbnail;
@@ -53,6 +54,7 @@ public class TweetActivity extends LoggedActivity {
             attachedImage = savedInstanceState.getParcelable("image");
             tweet = savedInstanceState.getString("tweet");
             replyToId = savedInstanceState.getLong("replyTo");
+			replyToText = savedInstanceState.getString("replyToText");
         }
 
         setTitle(replyToId == null ? R.string.title_tweet : R.string.title_tweet_reply);
@@ -66,6 +68,17 @@ public class TweetActivity extends LoggedActivity {
 			// Progress spinner
 			spinner = (ProgressBar)content.findViewById(R.id.progressBar);
 			spinner.setVisibility(View.GONE);
+			
+			// Replying to
+			LinearLayout replyingTo = (LinearLayout)content.findViewById(R.id.replyingTo);
+			if( replyingTo != null ) {
+				if( replyToId == null ) {
+					replyingTo.setVisibility(View.GONE);
+				} else {
+					TextView replyingToText = (TextView)content.findViewById(R.id.replyingToText);
+					replyingToText.setText(replyToText);
+				}
+			}
 			
 			// Layout
 			form = (LinearLayout)content.findViewById(R.id.form);
@@ -244,8 +257,7 @@ public class TweetActivity extends LoggedActivity {
 		spinner.setVisibility(View.VISIBLE);
 		
         poster.send(new OnTweetSubmitted() {
-			public void handle(boolean wasSuccessful) {
-				final boolean successful = wasSuccessful;
+			public void handle(final boolean successful) {
 				activity.runOnUiThread(new Runnable() {
 					public void run() {
 						if( successful == false ) {

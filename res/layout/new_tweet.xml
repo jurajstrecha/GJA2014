@@ -16,6 +16,33 @@
 		/>
 	
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/replyingTo"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:gravity="right"
+		android:orientation="vertical"
+		>
+		
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingRight="4dp"
+			android:text="@string/tweet_replying_to" />
+		
+		<TextView
+			android:id="@+id/replyingToText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingRight="4dp"
+			android:paddingBottom="8dp"
+			android:text="@string/tweet_replying_to"
+			
+			android:textColor="#777"
+		/>
+		
+	</LinearLayout>
+	
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/form"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
