@@ -8,6 +8,9 @@
 	
 	<item android:id="@+id/action_following"
           android:title="@string/action_following" />
+	
+	<item android:id="@+id/action_followers"
+          android:title="@string/action_followers" />
 		
     <item android:id="@+id/action_favorites"
           android:title="@string/action_favorites" />

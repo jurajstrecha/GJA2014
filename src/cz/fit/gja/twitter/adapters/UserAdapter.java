@@ -4,10 +4,9 @@
  */
 package cz.fit.gja.twitter.adapters;
 
+import cz.fit.gja.twitter.model.PortraitLoader;
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -22,20 +21,14 @@ import android.widget.Toast;
 import cz.fit.gja.twitter.R;
 import cz.fit.gja.twitter.model.FollowUser;
 import cz.fit.gja.twitter.model.UnfollowUser;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import twitter4j.IDs;
 import twitter4j.PagableResponseList;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 import twitter4j.User;
 
 public class UserAdapter extends BaseAdapter {
@@ -44,13 +37,25 @@ public class UserAdapter extends BaseAdapter {
 	protected Twitter twitter;
 	protected LayoutInflater inflater;
 	protected List<User> list = new ArrayList<User>();
-	protected Map<String, Bitmap> portraits = new HashMap<String, Bitmap>();
-	protected List<String> unfollowed = new ArrayList<String>();
+	protected PortraitLoader portraitLoader;
+	
+	protected static List<Long> followed = new ArrayList<Long>();
+	// as long as we only allow to see lists of current user
 
 	public UserAdapter(Context context, Twitter twitter) {
 		this.context = context;
 		this.inflater = LayoutInflater.from(context);
 		this.twitter = twitter;
+		
+		if( followed.isEmpty() ) {
+			(new LoadFriends(twitter)).execute();			
+		}
+	}
+	
+	public static void addFriendsIds(List<Long> ids) {
+		for(Long id: ids) {
+			followed.add(id);
+		}
 	}
 
 	public void addUsers(PagableResponseList<User> response) {
@@ -98,23 +103,23 @@ public class UserAdapter extends BaseAdapter {
 		
 		iv = (ImageView)itemView.findViewById(R.id.portrait);
 		if( iv != null ) {
-			if( portraits.containsKey(user.getScreenName()) ) {
-				iv.setImageBitmap(portraits.get(user.getScreenName()));
+			if( PortraitLoader.hasPortrait(user.getScreenName()) ) {
+				iv.setImageBitmap(PortraitLoader.getPortrait(user.getScreenName()));
 			} else {
 				final Handler refresh = new Handler(Looper.getMainLooper());
 				(new PortraitLoader(user, (ImageView)itemView.findViewById(R.id.portrait), refresh)).execute();
 			}
 		}
 		
-		if( unfollowed.contains(user.getScreenName()) ) {
-			b = (Button)itemView.findViewById(R.id.unfollow);
-			b.setVisibility(View.GONE);
+		if( followed.contains(user.getId()) ) {
 			b = (Button)itemView.findViewById(R.id.follow);
+			b.setVisibility(View.GONE);
+			b = (Button)itemView.findViewById(R.id.unfollow);
 			b.setVisibility(View.VISIBLE);
-		} else {
-			b = (Button)itemView.findViewById(R.id.follow);
-			b.setVisibility(View.GONE);
+		} else {			
 			b = (Button)itemView.findViewById(R.id.unfollow);
+			b.setVisibility(View.GONE);
+			b = (Button)itemView.findViewById(R.id.follow);
 			b.setVisibility(View.VISIBLE);
 		}
 		
@@ -137,17 +142,17 @@ public class UserAdapter extends BaseAdapter {
 		return itemView;
 	}
 	
-	public void followed(String screenName) {
-		if( unfollowed.contains(screenName) ) {
+	public void followed(Long id, String screenName) {
+		if( followed.contains(id) == false ) {
 			Toast.makeText(context, String.format(context.getString(R.string.user_msg_followed), "@" + screenName), Toast.LENGTH_SHORT).show();
-			unfollowed.remove(screenName);
+			followed.add(id);
 		}
 	}
 	
-	public void unfollowed(String screenName) {
-		if( unfollowed.contains(screenName) == false ) {
+	public void unfollowed(Long id, String screenName) {
+		if( followed.contains(id) ) {
 			Toast.makeText(context, String.format(context.getString(R.string.user_msg_unfollowed), "@" + screenName), Toast.LENGTH_SHORT).show();
-			unfollowed.add(screenName);
+			followed.remove(id);
 		}
 	}
 	
@@ -158,62 +163,56 @@ public class UserAdapter extends BaseAdapter {
 	public long getItemId(int i) {
 		return i;
 	}
-	
-	private class PortraitLoader extends AsyncTask<Void, Void, Void> {
-
-		private final Integer IO_BUFFER_SIZE = 8000;
-		private final User user;
-		private final ImageView view;
-		private final Handler refresh;
-
-		public PortraitLoader(User user, ImageView view, Handler refresh) {
-			this.user = user;
-			this.view = view;
-			this.refresh = refresh;
-		}
 		
-		@Override
-		protected Void doInBackground(Void... params) {
-			if( portraits.containsKey(user.getScreenName()) ) {
-				return null;
-			}
-			
-			final String url = user.getBiggerProfileImageURL();
-			refresh.post(new Runnable() {
-				public void run() {
-					try {
-						BufferedInputStream in = new BufferedInputStream(new URL(url).openStream(), IO_BUFFER_SIZE);
-						final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
-						BufferedOutputStream out = new BufferedOutputStream(dataStream, IO_BUFFER_SIZE);
-						int byte_;
-						while ((byte_ = in.read()) != -1) {
-							out.write(byte_);
-						}
-						out.flush();
-
-						final byte[] data = dataStream.toByteArray();
-						Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-						
-						view.setImageBitmap(bitmap);
-						portraits.put(user.getScreenName(), bitmap);
-					} catch(MalformedURLException ex) {
-						Logger.getLogger(UserAdapter.class.getName()).log(Level.SEVERE, null, ex);
-					} catch (IOException ex) {
-						Logger.getLogger(UserAdapter.class.getName()).log(Level.SEVERE, null, ex);
-					}
-				}
-			});
-			
-			return null;
-		}
-		
-	}
-	
-	@Override
+	@Override // bypassing a bug, keep it here
 	public void unregisterDataSetObserver(DataSetObserver observer) {
 		if (observer != null) {
 			super.unregisterDataSetObserver(observer);
 		}
-	} 
+	}
+	
+	private class LoadFriends extends AsyncTask<Void, Void, List<Long>> {
+
+		final private Twitter twitter;
+
+		public LoadFriends(Twitter twitter) {
+			this.twitter = twitter;
+		}
+		
+		@Override
+		protected List<Long> doInBackground(Void... params) {
+			try {
+				List<Long> ids = new ArrayList<Long>();
+				long cursor = -1;
+				IDs result;
+				
+				do {
+					result = twitter.getFriendsIDs(cursor);
+					for(Long id: result.getIDs()) {
+						ids.add(id);
+					}
+				} while ((cursor = result.getNextCursor()) != 0);
+				
+				return ids;
+			} catch (TwitterException ex) {
+				Logger.getLogger(UserAdapter.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (IllegalStateException ex) {
+				Logger.getLogger(UserAdapter.class.getName()).log(Level.SEVERE, null, ex);
+			}
+			
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(List<Long> result) {
+			addFriendsIds(result);
+			notifyDataSetChanged();
+			
+			super.onPostExecute(result);
+		}
+		
+		
+		
+	}
 	
 }

@@ -3,10 +3,12 @@ package cz.fit.gja.twitter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import static cz.fit.gja.twitter.BaseActivity.twitter;
 import cz.fit.gja.twitter.adapters.UserAdapter;
 import java.util.logging.Level;
@@ -29,6 +31,9 @@ abstract public class RelatedUsersActivity extends LoggedActivity {
 		
 		View currentView = this.findViewById(android.R.id.content);
 		final ProgressBar pb = (ProgressBar)currentView.findViewById(R.id.progressBar);
+		final TextView empty = (TextView)currentView.findViewById(R.id.usersEmpty);
+		empty.setText(getEmptyId());
+		empty.setVisibility(View.GONE);
 		
 		final RelatedUsersActivity activity = this;
 		userList = (ListView)currentView.findViewById(R.id.users);
@@ -46,14 +51,24 @@ abstract public class RelatedUsersActivity extends LoggedActivity {
 				
 				try {
 					PagableResponseList<User> list = getList(userId, cursor);
-					cursor = list.getNextCursor();
-					userAdapter.addUsers(list);
-					refresh.post(new Runnable() {
-						public void run() {
-							userAdapter.notifyDataSetChanged();
-							pb.setVisibility(View.GONE);
-						}
-					});
+					if( cursor == -1 && list.isEmpty() ) {
+						refresh.post(new Runnable() {
+							public void run() {
+								userList.setVisibility(View.GONE);
+								pb.setVisibility(View.GONE);
+								empty.setVisibility(View.VISIBLE);
+							}
+						});
+					} else {
+						cursor = list.getNextCursor();
+						userAdapter.addUsers(list);
+						refresh.post(new Runnable() {
+							public void run() {
+								userAdapter.notifyDataSetChanged();
+								pb.setVisibility(View.GONE);
+							}
+						});
+					}
 				} catch (TwitterException ex) {
 					Logger.getLogger(FollowingActivity.class.getName()).log(Level.SEVERE, null, ex);
 				}
@@ -83,5 +98,7 @@ abstract public class RelatedUsersActivity extends LoggedActivity {
 	abstract protected PagableResponseList<User> getList(Long userId, long cursor) throws TwitterException;
 	
 	abstract protected Integer getTitleId();
+	
+	abstract protected Integer getEmptyId();
 
 }

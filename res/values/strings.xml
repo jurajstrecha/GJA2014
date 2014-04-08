@@ -49,8 +49,11 @@
     <string name="tweet_thumbnail_dialog">Attached image</string>
     <string name="tweet_thumbnail_clear">Remove image</string>
     <string name="tweet_hint">Compose new Tweet&#8230;</string>
+	<string name="tweet_replying_to">Replying to:</string>
 	
 	<!-- Users -->
+	<string name="user_not_followed">No followers yet</string>
+	<string name="user_not_following">Not following anyone yet</string>
 	<string name="user_action_follow">Follow</string>
 	<string name="user_action_unfollow">Unfollow</string>
 	<string name="user_msg_followed">Now following %s</string>

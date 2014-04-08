@@ -16,5 +16,10 @@ public class FollowingActivity extends RelatedUsersActivity {
 	protected Integer getTitleId() {
 		return R.string.title_following;
 	}
+	
+	@Override
+	protected Integer getEmptyId() {
+		return R.string.user_not_following;
+	}
 		
 }

@@ -12,11 +12,11 @@ public class FollowUser extends ChangeRelationship {
 	}
 
 	@Override
-	protected void issueChange() throws TwitterException {
+	protected void issueChange(final Long id) throws TwitterException {
 		twitter.createFriendship(screenName);
 		refresh.post(new Runnable() {
 			public void run() {
-				adapter.followed(screenName);
+				adapter.followed(id, screenName);
 				adapter.notifyDataSetChanged();
 			}
 		});

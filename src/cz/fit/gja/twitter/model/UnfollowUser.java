@@ -12,11 +12,11 @@ public class UnfollowUser extends ChangeRelationship {
 	}
 
 	@Override
-	protected void issueChange() throws TwitterException {
+	protected void issueChange(final Long id) throws TwitterException {
 		twitter.destroyFriendship(screenName);
 		refresh.post(new Runnable() {
 			public void run() {
-				adapter.unfollowed(screenName);
+				adapter.unfollowed(id, screenName);
 				adapter.notifyDataSetChanged();
 			}
 		});

@@ -25,7 +25,8 @@ abstract public class ChangeRelationship extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... params) {
 		try {
-			issueChange();
+			long id = twitter.getId();
+			issueChange(id);
 		} catch (TwitterException ex) {
 			Logger.getLogger(ChangeRelationship.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -33,6 +34,6 @@ abstract public class ChangeRelationship extends AsyncTask<Void, Void, Void> {
 		return null;
 	}
 	
-	abstract protected void issueChange() throws TwitterException;
+	abstract protected void issueChange(Long id) throws TwitterException;
 	
 }

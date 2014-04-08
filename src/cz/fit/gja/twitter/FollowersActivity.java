@@ -16,5 +16,10 @@ public class FollowersActivity extends RelatedUsersActivity {
 	protected Integer getTitleId() {
 		return R.string.title_followers;
 	}
+	
+	@Override
+	protected Integer getEmptyId() {
+		return R.string.user_not_followed;
+	}
 		
 }
