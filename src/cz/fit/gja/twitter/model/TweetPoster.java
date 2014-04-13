@@ -1,34 +1,72 @@
 package cz.fit.gja.twitter.model;
 
 import android.graphics.Bitmap;
+import cz.fit.gja.twitter.TweetActivity;
 import cz.fit.gja.twitter.exceptions.SizeExceededException;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import twitter4j.StatusUpdate;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 public class TweetPoster {
 
+	final private Twitter twitter;
     final private Configuration config;
-    final private String        text;
-    private Bitmap              image;
-    private String              replyToId;
+	final private StatusUpdate status;
 
-    public TweetPoster(Configuration config, String text) {
+	public TweetPoster(Twitter twitter, Configuration config, String text) {
+		this.twitter = twitter;
         this.config = config;
-        this.text = text;
+		this.status = new StatusUpdate(text);
     }
 
-    public void setImage(Bitmap image) {
-        if (config != null && image.getByteCount() > config.getPhoto_size_limit()) {
-            throw new SizeExceededException();
-        }
+	public void setImage(Bitmap image, File tempDirectory) throws IOException {
+		File file = null;
+		try {
+			if( config != null && image.getByteCount() > config.getPhoto_size_limit() ) {
+				throw new SizeExceededException();
+			}
+			
+			file = File.createTempFile("twitterImage", ".twitter", tempDirectory);
+			FileOutputStream fos = new FileOutputStream(file);
+			image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+			
+			this.status.media(file);
+			file.deleteOnExit();
+		} catch (IOException ex) {
+			if( file != null ) {
+				file.delete();
+			}
+			
+			Logger.getLogger(TweetPoster.class.getName()).log(Level.SEVERE, null, ex);
+			throw ex;
+		}
+	}
 
-        this.image = image;
-    }
-
-    public void setIsReplyTo(String id) {
-        this.replyToId = id;
-    }
-
-    public void commit() {
-
-    }
-
+	public void setIsReplyTo(long id) {
+		this.status.setInReplyToStatusId(id);
+	}
+	
+	public void send(TweetActivity.OnTweetSubmitted handler) {
+		final TweetActivity.OnTweetSubmitted callback = handler;
+		(new Thread(new Runnable() {
+			public void run() {
+				boolean wasSuccessful = true;
+				try {
+					twitter.updateStatus(status);
+				} catch (TwitterException ex) {
+					wasSuccessful = false;
+					Logger.getLogger(TweetPoster.class.getName()).log(Level.SEVERE, null, ex);
+				}
+				
+				callback.handle(wasSuccessful);
+}
+		})).start();
+	}
+	
 }

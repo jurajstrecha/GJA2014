@@ -70,12 +70,18 @@ abstract public class LoggedActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
-            Intent intent = new Intent(this, TimelineActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            return true;
+			Intent intent = new Intent(this, TimelineActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
         case R.id.action_new_tweet:
             startActivity(new Intent(this, TweetActivity.class));
+            return true;
+		case R.id.action_following:
+            startActivity(new Intent(this, FollowingActivity.class));
+            return true;
+		case R.id.action_followers:
+            startActivity(new Intent(this, FollowersActivity.class));
             return true;
         case R.id.action_account:
             startActivity(new Intent(this, AccountActivity.class));

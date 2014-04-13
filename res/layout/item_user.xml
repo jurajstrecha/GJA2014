@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp" >
+
+	<ImageView
+		android:id="@+id/portrait"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginRight="8dp"
+		android:src="@drawable/no_portrait"
+		/>
+		
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+		
+		<TextView
+			android:id="@+id/fullName"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+
+			android:textStyle="bold"
+			/>
+		
+		<TextView
+			android:id="@+id/twitterName"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingBottom="4dp"
+			
+			android:textStyle="italic"
+			android:textColor="#00acee"
+			/>
+		
+		<TextView
+			android:id="@+id/bio"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			/>
+	
+		<Button
+			android:id="@+id/follow"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/user_action_follow"
+			/>
+
+		<Button
+			android:id="@+id/unfollow"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/user_action_unfollow"
+			/>
+	
+	</LinearLayout>
+
+</LinearLayout>
