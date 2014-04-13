@@ -22,17 +22,20 @@ public class LoginActivity extends BaseActivity {
 
     private void initializeLoginForm() {
 
-        //View currentView = this.findViewById(android.R.id.content);
+        // View currentView = this.findViewById(android.R.id.content);
 
         Button loginButton = (Button) findViewById(R.id.button_login);
         if (loginButton != null) {
-            //final EditText inputLogin = (EditText) currentView.findViewById(R.id.input_login);
-            //final EditText inputPassword = (EditText) currentView.findViewById(R.id.input_password);
+            // final EditText inputLogin = (EditText)
+            // currentView.findViewById(R.id.input_login);
+            // final EditText inputPassword = (EditText)
+            // currentView.findViewById(R.id.input_password);
 
             loginButton.setOnClickListener(new View.OnClickListener() {
 
                 public void onClick(View arg0) {
-                    //doLogin(inputLogin.getText().toString(), inputPassword.getText().toString());
+                    // doLogin(inputLogin.getText().toString(),
+                    // inputPassword.getText().toString());
                     loginToTwitter();
                 }
             });

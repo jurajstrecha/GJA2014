@@ -148,7 +148,8 @@ public class TweetActivity extends LoggedActivity {
         } else if (requestCode == REQUEST_IMAGE_SELECT && thumbnail != null) {
             Uri selectedImageUri = data.getData();
             try {
-                attachedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                attachedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(),
+                                                                  selectedImageUri);
                 setThumbnail(attachedImage);
             } catch (IOException ex) {
                 Logger.getLogger(TweetActivity.class.getName()).log(Level.SEVERE, null, ex);

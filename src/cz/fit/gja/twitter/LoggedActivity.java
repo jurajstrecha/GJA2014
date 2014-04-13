@@ -20,9 +20,9 @@ abstract public class LoggedActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(true);
-        
+
         if (isTwitterLoggedInAlready()) {
-            
+
             ConfigurationBuilder builder = new ConfigurationBuilder();
             builder.setOAuthConsumerKey(TWITTER_CONSUMER_KEY);
             builder.setOAuthConsumerSecret(TWITTER_CONSUMER_SECRET);
@@ -40,8 +40,8 @@ abstract public class LoggedActivity extends BaseActivity {
             try {
                 user = twitter.showUser(userId);
                 Log.d("twitter UserName", user.getName());
-                //startActivity(new Intent(this, TimelineActivity.class));
-                //finish();                
+                // startActivity(new Intent(this, TimelineActivity.class));
+                // finish();
             } catch (TwitterException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -49,13 +49,14 @@ abstract public class LoggedActivity extends BaseActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
             }
-            //Toast.makeText(this, twitter.getAuthorization().toString(), Toast.LENGTH_LONG).show();
+            // Toast.makeText(this, twitter.getAuthorization().toString(),
+            // Toast.LENGTH_LONG).show();
         } else {
             logoutFromTwitter();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
-        }        
-        
+        }
+
     }
 
     @Override
