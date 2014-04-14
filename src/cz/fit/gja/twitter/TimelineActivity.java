@@ -52,7 +52,8 @@ public class TimelineActivity extends LoggedActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //Toast.makeText(getApplicationContext(), "Loading timeline...", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getApplicationContext(), "Loading timeline...",
+            // Toast.LENGTH_SHORT).show();
         }
 
         /**
@@ -84,7 +85,8 @@ public class TimelineActivity extends LoggedActivity {
 
                 @Override
                 public void run() {
-                    //Toast.makeText(getApplicationContext(), "Showing home timeline", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getApplicationContext(),
+                    // "Showing home timeline", Toast.LENGTH_SHORT).show();
                     for (twitter4j.Status status : statuses) {
                         // System.out.println(status.getUser().getName() + ":" +
                         // status.getText());

@@ -7,19 +7,20 @@ import twitter4j.TwitterException;
 
 public class UnfollowUser extends ChangeRelationship {
 
-	public UnfollowUser(Twitter twitter, String screenName, UserAdapter adapter, Handler refresh) {
-		super(twitter, screenName, adapter, refresh);
-	}
+    public UnfollowUser(Twitter twitter, String screenName, UserAdapter adapter, Handler refresh) {
+        super(twitter, screenName, adapter, refresh);
+    }
 
-	@Override
-	protected void issueChange(final Long id) throws TwitterException {
-		twitter.destroyFriendship(screenName);
-		refresh.post(new Runnable() {
-			public void run() {
-				adapter.unfollowed(id, screenName);
-				adapter.notifyDataSetChanged();
-			}
-		});
-	}
-	
+    @Override
+    protected void issueChange(final Long id) throws TwitterException {
+        twitter.destroyFriendship(screenName);
+        refresh.post(new Runnable() {
+
+            public void run() {
+                adapter.unfollowed(id, screenName);
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
 }

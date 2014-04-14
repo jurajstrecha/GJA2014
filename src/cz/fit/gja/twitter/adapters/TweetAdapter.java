@@ -14,42 +14,15 @@ import android.widget.TextView;
 public class TweetAdapter extends BaseAdapter {
 
     public int getCount() {
-        throw new UnsupportedOperationException("Not supported yet."); // To
-                                                                       // change
-                                                                       // body
-                                                                       // of
-                                                                       // generated
-                                                                       // methods,
-                                                                       // choose
-                                                                       // Tools
-                                                                       // |
-                                                                       // Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public Object getItem(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); // To
-                                                                       // change
-                                                                       // body
-                                                                       // of
-                                                                       // generated
-                                                                       // methods,
-                                                                       // choose
-                                                                       // Tools
-                                                                       // |
-                                                                       // Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public View getView(int i, View view, ViewGroup vg) {
-        throw new UnsupportedOperationException("Not supported yet."); // To
-                                                                       // change
-                                                                       // body
-                                                                       // of
-                                                                       // generated
-                                                                       // methods,
-                                                                       // choose
-                                                                       // Tools
-                                                                       // |
-                                                                       // Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /*

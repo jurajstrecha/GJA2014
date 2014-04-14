@@ -26,10 +26,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TweetActivity extends LoggedActivity {
-	
-	public interface OnTweetSubmitted {
-		public void handle(boolean wasSuccessful);
-	}
+
+    public interface OnTweetSubmitted {
+
+        public void handle(boolean wasSuccessful);
+    }
 
     static final int THUMBNAIL_SIZE        = 160;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -38,12 +39,12 @@ public class TweetActivity extends LoggedActivity {
     String           tweet                 = "";
     Bitmap           attachedImage;
     Long             replyToId;
-	String           replyToText;
+    String           replyToText;
 
     EditText         textarea;
     ImageView        thumbnail;
-	LinearLayout     form;
-	ProgressBar      spinner;
+    LinearLayout     form;
+    ProgressBar      spinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class TweetActivity extends LoggedActivity {
             attachedImage = savedInstanceState.getParcelable("image");
             tweet = savedInstanceState.getString("tweet");
             replyToId = savedInstanceState.getLong("replyTo");
-			replyToText = savedInstanceState.getString("replyToText");
+            replyToText = savedInstanceState.getString("replyToText");
         }
 
         setTitle(replyToId == null ? R.string.title_tweet : R.string.title_tweet_reply);
@@ -64,24 +65,24 @@ public class TweetActivity extends LoggedActivity {
     private void initializeForm() {
         View content = (View) findViewById(android.R.id.content);
         if (content != null) {
-			
-			// Progress spinner
-			spinner = (ProgressBar)content.findViewById(R.id.progressBar);
-			spinner.setVisibility(View.GONE);
-			
-			// Replying to
-			LinearLayout replyingTo = (LinearLayout)content.findViewById(R.id.replyingTo);
-			if( replyingTo != null ) {
-				if( replyToId == null ) {
-					replyingTo.setVisibility(View.GONE);
-				} else {
-					TextView replyingToText = (TextView)content.findViewById(R.id.replyingToText);
-					replyingToText.setText(replyToText);
-				}
-			}
-			
-			// Layout
-			form = (LinearLayout)content.findViewById(R.id.form);
+
+            // Progress spinner
+            spinner = (ProgressBar) content.findViewById(R.id.progressBar);
+            spinner.setVisibility(View.GONE);
+
+            // Replying to
+            LinearLayout replyingTo = (LinearLayout) content.findViewById(R.id.replyingTo);
+            if (replyingTo != null) {
+                if (replyToId == null) {
+                    replyingTo.setVisibility(View.GONE);
+                } else {
+                    TextView replyingToText = (TextView) content.findViewById(R.id.replyingToText);
+                    replyingToText.setText(replyToText);
+                }
+            }
+
+            // Layout
+            form = (LinearLayout) content.findViewById(R.id.form);
 
             // Thumbnail
             thumbnail = (ImageView) content.findViewById(R.id.thumbnail);
@@ -239,42 +240,44 @@ public class TweetActivity extends LoggedActivity {
     private void saveTweet() {
         TweetPoster poster = new TweetPoster(twitter, null, tweet);
         if (attachedImage != null) {
-			try {
-				poster.setImage(attachedImage, this.getFilesDir());
-			} catch (IOException ex) {
-				Toast.makeText(this, "Tweet failed", Toast.LENGTH_SHORT).show();
-				form.setVisibility(View.VISIBLE);
-				spinner.setVisibility(View.GONE);
-				return;
-			}
+            try {
+                poster.setImage(attachedImage, this.getFilesDir());
+            } catch (IOException ex) {
+                Toast.makeText(this, "Tweet failed", Toast.LENGTH_SHORT).show();
+                form.setVisibility(View.VISIBLE);
+                spinner.setVisibility(View.GONE);
+                return;
+            }
         }
         if (replyToId != null) {
             poster.setIsReplyTo(replyToId);
         }
-		
-		final TweetActivity activity = this;
-		
-		form.setVisibility(View.GONE);
-		spinner.setVisibility(View.VISIBLE);
-		
-        poster.send(new OnTweetSubmitted() {
-			public void handle(final boolean successful) {
-				activity.runOnUiThread(new Runnable() {
-					public void run() {
-						if( successful == false ) {
-							Toast.makeText(activity, "Tweet failed", Toast.LENGTH_SHORT).show();
-							form.setVisibility(View.VISIBLE);
-							spinner.setVisibility(View.GONE);
-						} else {
-							Toast.makeText(activity, "Tweet succeeded", Toast.LENGTH_SHORT).show();
 
-							startActivity(new Intent(activity, TimelineActivity.class));
-							finish();
-						}
-					}
-				});
-			}
-		});
+        final TweetActivity activity = this;
+
+        form.setVisibility(View.GONE);
+        spinner.setVisibility(View.VISIBLE);
+
+        poster.send(new OnTweetSubmitted() {
+
+            public void handle(final boolean successful) {
+                activity.runOnUiThread(new Runnable() {
+
+                    public void run() {
+                        if (successful == false) {
+                            Toast.makeText(activity, "Tweet failed", Toast.LENGTH_SHORT).show();
+                            form.setVisibility(View.VISIBLE);
+                            spinner.setVisibility(View.GONE);
+                        } else {
+                            Toast.makeText(activity, "Tweet succeeded", Toast.LENGTH_SHORT).show();
+
+                            startActivity(new Intent(activity, TimelineActivity.class));
+                            finish();
+                        }
+                    }
+                });
+            }
+        });
     }
 
 }

@@ -24,9 +24,6 @@ abstract public class BaseActivity extends Activity {
 
     static String                      TWITTER_CONSUMER_KEY       = "pnj4t5biRWiSWjE6ooJsf1Bk3";
     static String                      TWITTER_CONSUMER_SECRET    = "QwjTSn5wZgXTK4LqCLulSYebba5dtLAjLANoODjuFwAKk7eZBa";
-    // static String TWITTER_CONSUMER_KEY = "LsCQaPOwd8k7WkyRFRZF4Q";
-    // static String TWITTER_CONSUMER_SECRET =
-    // "KJbJu5IQrlwxW7Cwnax3mMzAc4j3n6Wd2dG125srgk";
 
     // Preference Constants
     static String                      PREFERENCE_NAME            = "twitter_oauth";

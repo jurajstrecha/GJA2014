@@ -15,58 +15,59 @@ import twitter4j.TwitterException;
 
 public class TweetPoster {
 
-	final private Twitter twitter;
+    final private Twitter       twitter;
     final private Configuration config;
-	final private StatusUpdate status;
+    final private StatusUpdate  status;
 
-	public TweetPoster(Twitter twitter, Configuration config, String text) {
-		this.twitter = twitter;
+    public TweetPoster(Twitter twitter, Configuration config, String text) {
+        this.twitter = twitter;
         this.config = config;
-		this.status = new StatusUpdate(text);
+        this.status = new StatusUpdate(text);
     }
 
-	public void setImage(Bitmap image, File tempDirectory) throws IOException {
-		File file = null;
-		try {
-			if( config != null && image.getByteCount() > config.getPhoto_size_limit() ) {
-				throw new SizeExceededException();
-			}
-			
-			file = File.createTempFile("twitterImage", ".twitter", tempDirectory);
-			FileOutputStream fos = new FileOutputStream(file);
-			image.compress(Bitmap.CompressFormat.PNG, 100, fos);
-			
-			this.status.media(file);
-			file.deleteOnExit();
-		} catch (IOException ex) {
-			if( file != null ) {
-				file.delete();
-			}
-			
-			Logger.getLogger(TweetPoster.class.getName()).log(Level.SEVERE, null, ex);
-			throw ex;
-		}
-	}
+    public void setImage(Bitmap image, File tempDirectory) throws IOException {
+        File file = null;
+        try {
+            if (config != null && image.getByteCount() > config.getPhoto_size_limit()) {
+                throw new SizeExceededException();
+            }
 
-	public void setIsReplyTo(long id) {
-		this.status.setInReplyToStatusId(id);
-	}
-	
-	public void send(TweetActivity.OnTweetSubmitted handler) {
-		final TweetActivity.OnTweetSubmitted callback = handler;
-		(new Thread(new Runnable() {
-			public void run() {
-				boolean wasSuccessful = true;
-				try {
-					twitter.updateStatus(status);
-				} catch (TwitterException ex) {
-					wasSuccessful = false;
-					Logger.getLogger(TweetPoster.class.getName()).log(Level.SEVERE, null, ex);
-				}
-				
-				callback.handle(wasSuccessful);
-}
-		})).start();
-	}
-	
+            file = File.createTempFile("twitterImage", ".twitter", tempDirectory);
+            FileOutputStream fos = new FileOutputStream(file);
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+
+            this.status.media(file);
+            file.deleteOnExit();
+        } catch (IOException ex) {
+            if (file != null) {
+                file.delete();
+            }
+
+            Logger.getLogger(TweetPoster.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
+    public void setIsReplyTo(long id) {
+        this.status.setInReplyToStatusId(id);
+    }
+
+    public void send(TweetActivity.OnTweetSubmitted handler) {
+        final TweetActivity.OnTweetSubmitted callback = handler;
+        (new Thread(new Runnable() {
+
+            public void run() {
+                boolean wasSuccessful = true;
+                try {
+                    twitter.updateStatus(status);
+                } catch (TwitterException ex) {
+                    wasSuccessful = false;
+                    Logger.getLogger(TweetPoster.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                callback.handle(wasSuccessful);
+            }
+        })).start();
+    }
+
 }

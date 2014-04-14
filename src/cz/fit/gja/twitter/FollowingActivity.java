@@ -7,19 +7,19 @@ import twitter4j.User;
 
 public class FollowingActivity extends RelatedUsersActivity {
 
-	@Override
-	protected PagableResponseList<User> getList(Long userId, long cursor) throws TwitterException {
-		return twitter.getFriendsList(userId, cursor);
-	}
-	
-	@Override
-	protected Integer getTitleId() {
-		return R.string.title_following;
-	}
-	
-	@Override
-	protected Integer getEmptyId() {
-		return R.string.user_not_following;
-	}
-		
+    @Override
+    protected PagableResponseList<User> getList(Long userId, long cursor) throws TwitterException {
+        return twitter.getFriendsList(userId, cursor);
+    }
+
+    @Override
+    protected Integer getTitleId() {
+        return R.string.title_following;
+    }
+
+    @Override
+    protected Integer getEmptyId() {
+        return R.string.user_not_following;
+    }
+
 }
