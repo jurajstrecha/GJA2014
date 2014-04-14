@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 abstract public class LoggedActivity extends BaseActivity {
 
@@ -21,42 +22,44 @@ abstract public class LoggedActivity extends BaseActivity {
         ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(true);
 
+        if (!isNetworkAvailable()) {
+            // Redirect to Login
+            Toast.makeText(this, R.string.msg_no_connection, Toast.LENGTH_LONG).show();
+            logoutFromTwitter();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
+        
         if (isTwitterLoggedInAlready()) {
-
+            // Make twitter instance and get userId
             ConfigurationBuilder builder = new ConfigurationBuilder();
             builder.setOAuthConsumerKey(TWITTER_CONSUMER_KEY);
             builder.setOAuthConsumerSecret(TWITTER_CONSUMER_SECRET);
-
             // Access Token
             String access_token = mSharedPreferences.getString(PREF_KEY_OAUTH_TOKEN, "");
             // Access Token Secret
             String access_token_secret = mSharedPreferences.getString(PREF_KEY_OAUTH_SECRET, "");
-
             AccessToken accessToken = new AccessToken(access_token, access_token_secret);
             twitter = new TwitterFactory(builder.build()).getInstance(accessToken);
             userId = accessToken.getUserId();
             User user;
             // Check login (tokens)
             try {
+                // If is there exception, something is wrong - for example wrong tokens are set
                 user = twitter.showUser(userId);
                 Log.d("twitter UserName", user.getName());
-                // startActivity(new Intent(this, TimelineActivity.class));
-                // finish();
             } catch (TwitterException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 logoutFromTwitter();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
             }
-            // Toast.makeText(this, twitter.getAuthorization().toString(),
-            // Toast.LENGTH_LONG).show();
         } else {
+            // Redirect to Login
             logoutFromTwitter();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
-
     }
 
     @Override

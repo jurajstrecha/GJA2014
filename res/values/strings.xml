@@ -5,7 +5,9 @@
 
     <!-- Generic messages -->
     <string name="msg_no_connection">No connection available</string>
-
+    <string name="msg_already_logged">Already Logged into twitter</string>
+    <string name="msg_login_failed">Login failed</string>
+    
     <!-- Login -->
     <string name="button_login">Login with Twitter</string>
     <string name="button_logout">Logout from Twitter</string>

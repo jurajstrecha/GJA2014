@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 abstract public class BaseActivity extends Activity {
 
+    // App keys
     static String                      TWITTER_CONSUMER_KEY       = "pnj4t5biRWiSWjE6ooJsf1Bk3";
     static String                      TWITTER_CONSUMER_SECRET    = "QwjTSn5wZgXTK4LqCLulSYebba5dtLAjLANoODjuFwAKk7eZBa";
 
@@ -31,6 +32,7 @@ abstract public class BaseActivity extends Activity {
     static final String                PREF_KEY_OAUTH_SECRET      = "oauth_token_secret";
     static final String                PREF_KEY_TWITTER_LOGIN     = "isTwitterLogedIn";
 
+    // Must by set in app settings
     static final String                TWITTER_CALLBACK_URL       = "oauth://t4jsample";
 
     // Twitter oauth urls
@@ -56,75 +58,52 @@ abstract public class BaseActivity extends Activity {
         StrictMode.setThreadPolicy(policy);
         //
 
+        // Shared Preferences
+        mSharedPreferences = getApplicationContext().getSharedPreferences("MyPref", 0);
+
         // Check if Internet present
-        if (isNetworkAvailable() == false) {
+        if (!isNetworkAvailable()) {
             Toast.makeText(this, R.string.msg_no_connection, Toast.LENGTH_LONG).show();
             return;
         }
 
         // Check if twitter keys are set
-        if (TWITTER_CONSUMER_KEY.trim().length() == 0 ||
-            TWITTER_CONSUMER_SECRET.trim().length() == 0) {
-            // Internet Connection is not present
-            Toast.makeText(this, "Please set your twitter oauth tokens first!", Toast.LENGTH_LONG)
-                 .show();
-            // stop executing code by return
+        if (TWITTER_CONSUMER_KEY.trim().length() == 0 || TWITTER_CONSUMER_SECRET.trim().length() == 0) {
+            Log.e("Twitter keys error", "Please set your twitter oauth tokens first!");
             return;
         }
-
-        // Shared Preferences
-        mSharedPreferences = getApplicationContext().getSharedPreferences("MyPref", 0);
 
         // This if conditions is tested once is redirected from twitter page.
         // Parse the uri to get oAuth Verifier.
         if (!isTwitterLoggedInAlready()) {
             Uri uri = getIntent().getData();
+
             if (uri != null && uri.toString().startsWith(TWITTER_CALLBACK_URL)) {
                 // oAuth verifier
                 String verifier = uri.getQueryParameter(URL_TWITTER_OAUTH_VERIFIER);
-
+                
                 try {
                     // Get the access token
                     AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
-
+                    
                     // Shared Preferences
                     Editor e = mSharedPreferences.edit();
-
+                    
                     // After getting access token, access token secret
                     // store them in application preferences
                     e.putString(PREF_KEY_OAUTH_TOKEN, accessToken.getToken());
                     e.putString(PREF_KEY_OAUTH_SECRET, accessToken.getTokenSecret());
+                    
                     // Store login status - true
                     e.putBoolean(PREF_KEY_TWITTER_LOGIN, true);
                     e.commit(); // save changes
-
                     Log.e("Twitter OAuth Token", "> " + accessToken.getToken());
-
-                    // Hide login button
-                    // btnLoginTwitter.setVisibility(View.GONE);
-
-                    // Show Update Twitter
-                    // lblUpdate.setVisibility(View.VISIBLE);
-                    // txtUpdate.setVisibility(View.VISIBLE);
-                    // btnUpdateStatus.setVisibility(View.VISIBLE);
-                    // btnLogoutTwitter.setVisibility(View.VISIBLE);
-
-                    // Getting user details from twitter
-                    // For now i am getting his name only
-                    // long userID = accessToken.getUserId();
-                    // User user = twitter.showUser(userID);
-                    // String username = user.getName();
-
-                    // Displaying in xml ui
-                    // lblUserName.setText(Html.fromHtml("<b>Welcome " +
-                    // username + "</b>"));
                 } catch (Exception e) {
                     // Check log for login errors
                     Log.e("Twitter Login Error", "> " + e.getMessage());
                 }
             }
         }
-
     }
 
     /**
@@ -134,7 +113,6 @@ abstract public class BaseActivity extends Activity {
      * @return true/false
      */
     protected boolean isTwitterLoggedInAlready() {
-        // return twitter login status from Shared Preferences
         return mSharedPreferences.getBoolean(PREF_KEY_TWITTER_LOGIN, false);
     }
 
@@ -145,35 +123,31 @@ abstract public class BaseActivity extends Activity {
      */
     protected boolean isNetworkAvailable() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm == null) {
+        
+        if (cm == null)
             return false;
-        }
-
+        
         NetworkInfo i = cm.getActiveNetworkInfo();
-        if (i == null) {
+        
+        if (i == null)
             return false;
-        }
-        if (!i.isConnected()) {
+        
+        if (!i.isConnected())
             return false;
-        }
-        if (!i.isAvailable()) {
+        
+        if (!i.isAvailable())
             return false;
-        }
+        
         return true;
     }
 
     protected void loginToTwitter() {
-        /*
-         * final Activity loginActivity = this;
-         * 
-         * ProgressDialog.show(this, getString(R.string.progress_login_title),
-         * getString(R.string.progress_login), true, true, new
-         * DialogInterface.OnCancelListener() { public void
-         * onCancel(DialogInterface arg0) { loginActivity.startActivity(new
-         * Intent(loginActivity, TimelineActivity.class));
-         * loginActivity.finish(); } });
-         */
-
+        // Check if Internet present
+        if (!isNetworkAvailable()) {
+            Toast.makeText(this, R.string.msg_no_connection, Toast.LENGTH_LONG).show();
+            return;
+        }
+        
         // Check if already logged in
         if (!isTwitterLoggedInAlready()) {
             ConfigurationBuilder builder = new ConfigurationBuilder();
@@ -186,18 +160,16 @@ abstract public class BaseActivity extends Activity {
 
             try {
                 requestToken = twitter.getOAuthRequestToken(TWITTER_CALLBACK_URL);
-                // userId = twitter.getId(); // Tohle tu být asi nemůže, protože
-                // není uživatel ještě autentifikován
-                this.startActivity(new Intent(Intent.ACTION_VIEW,
-                                              Uri.parse(requestToken.getAuthenticationURL())));
+                this.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL())));
                 finish();
 
             } catch (TwitterException e) {
                 e.printStackTrace();
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("Twitter Login Error", "> " + e.getMessage());
+                Toast.makeText(this, R.string.msg_login_failed, Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(this, "Already Logged into twitter", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.msg_already_logged, Toast.LENGTH_LONG).show();
             finish();
         }
 
@@ -214,18 +186,6 @@ abstract public class BaseActivity extends Activity {
         e.remove(PREF_KEY_OAUTH_SECRET);
         e.remove(PREF_KEY_TWITTER_LOGIN);
         e.commit();
-
-        // After this take the appropriate action
-        // I am showing the hiding/showing buttons again
-        // You might not needed this code
-        // btnLogoutTwitter.setVisibility(View.GONE);
-        // btnUpdateStatus.setVisibility(View.GONE);
-        // txtUpdate.setVisibility(View.GONE);
-        // lblUpdate.setVisibility(View.GONE);
-        // lblUserName.setText("");
-        // lblUserName.setVisibility(View.GONE);
-
-        // btnLoginTwitter.setVisibility(View.VISIBLE);
     }
 
 }
