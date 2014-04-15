@@ -7,7 +7,7 @@
 
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dip"
         android:layout_weight="1"
         android:columnCount="2"
         android:paddingBottom="4dp"
@@ -31,24 +31,11 @@
             android:layout_row="0"
             android:orientation="vertical" >
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tweet_fullName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/tweet_fullName"
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tweet_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:textColor="@android:color/darker_gray" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tweet_twitterName"
@@ -56,21 +43,35 @@
                 android:layout_height="wrap_content"
                 android:textColor="#00acee"
                 android:textStyle="italic" />
-
         </LinearLayout>
-
     </GridLayout>
 
     <TextView
         android:id="@+id/tweet_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp" />
 
     <ImageView
         android:id="@+id/tweet_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:adjustViewBounds="true" />
+
+    <ProgressBar
+        android:id="@+id/tweet_image_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tweet_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:textColor="@android:color/darker_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"

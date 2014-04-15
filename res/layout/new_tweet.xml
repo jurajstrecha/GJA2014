@@ -17,7 +17,7 @@
     <LinearLayout
         android:id="@+id/replyingTo"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:gravity="right"
         android:orientation="vertical" >
 
@@ -89,7 +89,7 @@
 
         <ImageView
             android:id="@+id/thumbnail"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/tweet_thumbnail"
             android:paddingTop="35dp" />

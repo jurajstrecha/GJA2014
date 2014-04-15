@@ -4,17 +4,23 @@
  */
 package cz.fit.gja.twitter.adapters;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import cz.fit.gja.twitter.R;
+import cz.fit.gja.twitter.model.ImageLoader;
 import cz.fit.gja.twitter.model.PortraitLoader;
+import twitter4j.MediaEntity;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TweetAdapter extends BaseAdapter {
@@ -54,9 +61,10 @@ public class TweetAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        final TweetAdapter tweetAdapter = this;
+        // final TweetAdapter tweetAdapter = this;
         TextView textView;
         ImageView imageView;
+        ProgressBar progressBar;
         Button button;
 
         final twitter4j.Status status = getItem(i);
@@ -70,20 +78,19 @@ public class TweetAdapter extends BaseAdapter {
 
         textView = (TextView) view.findViewById(R.id.tweet_time);
         if (textView != null) {
-            SimpleDateFormat format = new SimpleDateFormat("hh:mm a '-' d.M", Locale.getDefault());
+            SimpleDateFormat format = new SimpleDateFormat("hh:mm d.M.y", Locale.getDefault());
             textView.setText(format.format(status.getCreatedAt()));
         }
-        
+
         textView = (TextView) view.findViewById(R.id.tweet_twitterName);
         if (textView != null) {
             textView.setText("@" + user.getScreenName());
         }
-        
+
         textView = (TextView) view.findViewById(R.id.tweet_text);
         if (textView != null) {
             textView.setText(status.getText());
         }
-        Log.d(user.getName(), status.getText());
 
         imageView = (ImageView) view.findViewById(R.id.tweet_portrait);
         if (imageView != null) {
@@ -91,7 +98,42 @@ public class TweetAdapter extends BaseAdapter {
                 imageView.setImageBitmap(PortraitLoader.getPortrait(user.getScreenName()));
             } else {
                 final Handler refresh = new Handler(Looper.getMainLooper());
-                (new PortraitLoader(user, (ImageView) view.findViewById(R.id.tweet_portrait), refresh)).execute();
+                new PortraitLoader(user, imageView, refresh).execute();
+            }
+        }
+
+        final MediaEntity[] mediaEntities = status.getMediaEntities();
+
+        imageView = (ImageView) view.findViewById(R.id.tweet_image);
+        progressBar = (ProgressBar) view.findViewById(R.id.tweet_image_progress);
+        if (imageView != null && progressBar != null) {
+            if (mediaEntities.length >= 1) {
+                try {
+                    URL url = new URL(mediaEntities[0].getMediaURL());
+                    // if (mediaEntities[0].getType() == "photo") {
+                    if (ImageLoader.hasImage(url)) {
+                        imageView.setImageBitmap(ImageLoader.getImage(url));
+                    } else {
+                        progressBar.setVisibility(View.VISIBLE);
+                        new ImageLoader(imageView, progressBar, url).execute();
+                    }
+                    imageView.setOnClickListener(new View.OnClickListener(){
+                        public void onClick(View v){
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            if (mediaEntities[0].getExpandedURL() != null)
+                                intent.setData(Uri.parse(mediaEntities[0].getExpandedURL()));
+                            else
+                                intent.setData(Uri.parse(mediaEntities[0].getURL()));
+                            context.startActivity(intent);
+                        }
+                    });
+                    
+                    // }
+                } catch (MalformedURLException e) {
+                    Log.e("Wrong image url", e.getMessage());
+                }
             }
         }
 
@@ -100,8 +142,9 @@ public class TweetAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View v) {
-                //final Handler refresh = new Handler(Looper.getMainLooper());
-                //(new FollowUser(twitter, user.getScreenName(), tweetAdapter, refresh)).execute();
+                // final Handler refresh = new Handler(Looper.getMainLooper());
+                // (new FollowUser(twitter, user.getScreenName(), tweetAdapter,
+                // refresh)).execute();
             }
         });
 
@@ -110,21 +153,23 @@ public class TweetAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View v) {
-                //final Handler refresh = new Handler(Looper.getMainLooper());
-                //(new UnfollowUser(twitter, user.getScreenName(), adapter, refresh)).execute();
+                // final Handler refresh = new Handler(Looper.getMainLooper());
+                // (new UnfollowUser(twitter, user.getScreenName(), adapter,
+                // refresh)).execute();
             }
-        });  
-        
+        });
+
         button = (Button) view.findViewById(R.id.tweet_favorite);
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                //final Handler refresh = new Handler(Looper.getMainLooper());
-                //(new UnfollowUser(twitter, user.getScreenName(), adapter, refresh)).execute();
+                // final Handler refresh = new Handler(Looper.getMainLooper());
+                // (new UnfollowUser(twitter, user.getScreenName(), adapter,
+                // refresh)).execute();
             }
         });
-        
+
         return view;
     }
 
