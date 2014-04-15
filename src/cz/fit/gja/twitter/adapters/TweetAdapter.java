@@ -15,6 +15,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,6 +27,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import cz.fit.gja.twitter.TweetActivity;
 
 public class TweetAdapter extends BaseAdapter {
 
@@ -100,8 +102,11 @@ public class TweetAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View v) {
-                //final Handler refresh = new Handler(Looper.getMainLooper());
-                //(new FollowUser(twitter, user.getScreenName(), tweetAdapter, refresh)).execute();
+                Intent intent = new Intent(context, TweetActivity.class);
+				intent.putExtra("tweet", "@" + user.getScreenName() + " ");
+				intent.putExtra("replyToId", status.getId());
+				intent.putExtra("replyToText", status.getText());
+                context.startActivity(intent);
             }
         });
 
