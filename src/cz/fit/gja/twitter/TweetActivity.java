@@ -90,7 +90,7 @@ public class TweetActivity extends LoggedActivity {
             spinner.setVisibility(View.GONE);
 
             // Replying to
-            LinearLayout replyingTo = (LinearLayout) content.findViewById(R.id.replyingTo);
+            replyingTo = (LinearLayout) content.findViewById(R.id.replyingTo);
             if (replyingTo != null) {
                 if (replyToId == null) {
                     replyingTo.setVisibility(View.GONE);
@@ -102,7 +102,6 @@ public class TweetActivity extends LoggedActivity {
 
             // Layout
             form = (LinearLayout) content.findViewById(R.id.form);
-			replyingTo = (LinearLayout) content.findViewById(R.id.replyingTo);
 
             // Thumbnail
             thumbnail = (ImageView) content.findViewById(R.id.thumbnail);
@@ -272,6 +271,7 @@ public class TweetActivity extends LoggedActivity {
             } catch (IOException ex) {
                 Toast.makeText(this, "Tweet failed", Toast.LENGTH_SHORT).show();
                 form.setVisibility(View.VISIBLE);
+				replyingTo.setVisibility(View.VISIBLE);
                 spinner.setVisibility(View.GONE);
                 return;
             }
