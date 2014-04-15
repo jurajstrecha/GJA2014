@@ -17,7 +17,7 @@
     <LinearLayout
         android:id="@+id/replyingTo"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:gravity="right"
         android:orientation="vertical" >
 

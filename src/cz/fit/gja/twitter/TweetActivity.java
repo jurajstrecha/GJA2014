@@ -54,8 +54,11 @@ public class TweetActivity extends LoggedActivity {
         if (savedInstanceState != null) {
             attachedImage = savedInstanceState.getParcelable("image");
             tweet = savedInstanceState.getString("tweet");
-            replyToId = savedInstanceState.getLong("replyTo");
-            replyToText = savedInstanceState.getString("replyToText");
+            
+            if( savedInstanceState.containsKey("replyTo") ) {
+                replyToId = savedInstanceState.getLong("replyTo");
+                replyToText = savedInstanceState.getString("replyToText");
+            }
         }
 
         setTitle(replyToId == null ? R.string.title_tweet : R.string.title_tweet_reply);
