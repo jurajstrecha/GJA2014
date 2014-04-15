@@ -52,8 +52,7 @@ public class PortraitLoader extends AsyncTask<Void, Void, Void> {
 
             public void run() {
                 try {
-                    BufferedInputStream in = new BufferedInputStream(new URL(url).openStream(),
-                                                                     IO_BUFFER_SIZE);
+                    BufferedInputStream in = new BufferedInputStream(new URL(url).openStream(), IO_BUFFER_SIZE);
                     final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
                     BufferedOutputStream out = new BufferedOutputStream(dataStream, IO_BUFFER_SIZE);
                     int byte_;

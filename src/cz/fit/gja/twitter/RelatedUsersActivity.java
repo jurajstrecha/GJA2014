@@ -84,10 +84,8 @@ abstract public class RelatedUsersActivity extends LoggedActivity {
 
             }
 
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                                 int totalItemCount) {
-                if (userList == null || userAdapter == null ||
-                    userList.getChildAt(userList.getChildCount() - 1) == null) {
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (userList == null || userAdapter == null || userList.getChildAt(userList.getChildCount() - 1) == null) {
                     return;
                 }
 
@@ -101,8 +99,7 @@ abstract public class RelatedUsersActivity extends LoggedActivity {
         (new Thread(loadUsers)).start();
     }
 
-    abstract protected PagableResponseList<User>
-            getList(Long userId, long cursor) throws TwitterException;
+    abstract protected PagableResponseList<User> getList(Long userId, long cursor) throws TwitterException;
 
     abstract protected Integer getTitleId();
 

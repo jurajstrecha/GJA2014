@@ -40,9 +40,8 @@ public class UserAdapter extends BaseAdapter {
     protected PortraitLoader    portraitLoader;
 
     protected static List<Long> followed = new ArrayList<Long>();
-
     // as long as we only allow to see lists of current user
-
+    
     public UserAdapter(Context context, Twitter twitter) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -65,6 +64,7 @@ public class UserAdapter extends BaseAdapter {
         }
     }
 
+    @Override
     public int getCount() {
         return this.list.size();
     }
@@ -74,6 +74,7 @@ public class UserAdapter extends BaseAdapter {
         return 1;
     }
 
+    @Override
     public View getView(int position, View itemView, ViewGroup parent) {
         final UserAdapter adapter = this;
         TextView tv;
@@ -127,6 +128,7 @@ public class UserAdapter extends BaseAdapter {
         b = (Button) itemView.findViewById(R.id.follow);
         b.setOnClickListener(new View.OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 final Handler refresh = new Handler(Looper.getMainLooper());
                 (new FollowUser(twitter, user.getScreenName(), adapter, refresh)).execute();
@@ -136,6 +138,7 @@ public class UserAdapter extends BaseAdapter {
         b = (Button) itemView.findViewById(R.id.unfollow);
         b.setOnClickListener(new View.OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 final Handler refresh = new Handler(Looper.getMainLooper());
                 (new UnfollowUser(twitter, user.getScreenName(), adapter, refresh)).execute();
@@ -147,36 +150,31 @@ public class UserAdapter extends BaseAdapter {
 
     public void followed(Long id, String screenName) {
         if (followed.contains(id) == false) {
-            Toast.makeText(context,
-                           String.format(context.getString(R.string.user_msg_followed), "@" +
-                                                                                        screenName),
-                           Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, String.format(context.getString(R.string.user_msg_followed), "@" + screenName), Toast.LENGTH_SHORT).show();
             followed.add(id);
         }
     }
 
     public void unfollowed(Long id, String screenName) {
         if (followed.contains(id)) {
-            Toast.makeText(context,
-                           String.format(context.getString(R.string.user_msg_unfollowed), "@" +
-                                                                                          screenName),
-                           Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, String.format(context.getString(R.string.user_msg_unfollowed), "@" + screenName), Toast.LENGTH_SHORT).show();
             followed.remove(id);
         }
     }
 
+    @Override
     public User getItem(int i) {
         return this.list.get(i);
     }
 
+    @Override
     public long getItemId(int i) {
         return i;
     }
 
-    @Override
     // bypassing a bug, keep it here
-            public
-            void unregisterDataSetObserver(DataSetObserver observer) {
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
         if (observer != null) {
             super.unregisterDataSetObserver(observer);
         }
@@ -218,7 +216,6 @@ public class UserAdapter extends BaseAdapter {
         protected void onPostExecute(List<Long> result) {
             addFriendsIds(result);
             notifyDataSetChanged();
-
             super.onPostExecute(result);
         }
 

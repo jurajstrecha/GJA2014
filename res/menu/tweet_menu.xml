@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-	<item android:id="@+id/tweet_submit"
-          android:title="@string/tweet_submit"
-		  android:showAsAction="always"
-		/>
+
+    <item
+        android:id="@+id/tweet_submit"
+        android:showAsAction="always"
+        android:title="@string/tweet_submit"/>
+
 </menu>
