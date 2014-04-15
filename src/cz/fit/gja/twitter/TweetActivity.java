@@ -32,7 +32,7 @@ public class TweetActivity extends LoggedActivity {
         public void handle(boolean wasSuccessful);
     }
 
-    static final int THUMBNAIL_SIZE        = 160;
+    static final int THUMBNAIL_SIZE        = 420;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_IMAGE_SELECT  = 2;
 
@@ -44,19 +44,38 @@ public class TweetActivity extends LoggedActivity {
     EditText         textarea;
     ImageView        thumbnail;
     LinearLayout     form;
+	LinearLayout     replyingTo;
     ProgressBar      spinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_tweet);
+		
+		Intent intent = this.getIntent();
+		if( intent != null ) {
+			Bundle extras = intent.getExtras();
+			if( extras != null && extras.containsKey("replyToId") ) {
+				tweet = extras.getString("tweet");
+				replyToId = extras.getLong("replyToId");
+				replyToText = extras.getString("replyToText");
+			}
+		}
 
         if (savedInstanceState != null) {
-            attachedImage = savedInstanceState.getParcelable("image");
-            tweet = savedInstanceState.getString("tweet");
-            replyToId = savedInstanceState.getLong("replyTo");
-            replyToText = savedInstanceState.getString("replyToText");
-        }
+			if( savedInstanceState.containsKey("image") ) {
+				attachedImage = savedInstanceState.getParcelable("image");
+			}
+			
+			if( savedInstanceState.containsKey("tweet") ) {
+				tweet = savedInstanceState.getString("tweet");
+			}
+            
+            if( savedInstanceState.containsKey("replyTo") ) {
+                replyToId = savedInstanceState.getLong("replyTo");
+                replyToText = savedInstanceState.getString("replyToText");
+            }
+        }		
 
         setTitle(replyToId == null ? R.string.title_tweet : R.string.title_tweet_reply);
         initializeForm();
@@ -83,6 +102,7 @@ public class TweetActivity extends LoggedActivity {
 
             // Layout
             form = (LinearLayout) content.findViewById(R.id.form);
+			replyingTo = (LinearLayout) content.findViewById(R.id.replyingTo);
 
             // Thumbnail
             thumbnail = (ImageView) content.findViewById(R.id.thumbnail);
@@ -196,10 +216,13 @@ public class TweetActivity extends LoggedActivity {
             if (thumbnail.getLayoutParams().width < thumbnail.getLayoutParams().height) {
                 thumbnail.getLayoutParams().width = THUMBNAIL_SIZE;
                 thumbnail.getLayoutParams().height = (int) ((float) imageBitmap.getHeight() * (THUMBNAIL_SIZE / (float) imageBitmap.getWidth()));
-            } else {
+            } else if( thumbnail.getLayoutParams().width > thumbnail.getLayoutParams().height ) {
                 thumbnail.getLayoutParams().width = (int) ((float) imageBitmap.getWidth() * (THUMBNAIL_SIZE / (float) imageBitmap.getHeight()));
                 thumbnail.getLayoutParams().height = THUMBNAIL_SIZE;
-            }
+            } else {
+				thumbnail.getLayoutParams().width = THUMBNAIL_SIZE;
+				thumbnail.getLayoutParams().height = THUMBNAIL_SIZE;
+			}
         } else {
             thumbnail.setImageBitmap(null);
             thumbnail.getLayoutParams().width = 0;
@@ -217,6 +240,10 @@ public class TweetActivity extends LoggedActivity {
         super.onSaveInstanceState(icicle);
         icicle.putString("tweet", textarea.getText().toString());
         icicle.putParcelable("image", attachedImage);
+		if( replyToId != null ) {
+		    icicle.putLong("replyToId", replyToId);
+		    icicle.putString("replyToText", replyToText);
+		}
     }
 
     @Override
@@ -256,6 +283,7 @@ public class TweetActivity extends LoggedActivity {
         final TweetActivity activity = this;
 
         form.setVisibility(View.GONE);
+		replyingTo.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
 
         poster.send(new OnTweetSubmitted() {
@@ -267,6 +295,7 @@ public class TweetActivity extends LoggedActivity {
                         if (successful == false) {
                             Toast.makeText(activity, "Tweet failed", Toast.LENGTH_SHORT).show();
                             form.setVisibility(View.VISIBLE);
+							replyingTo.setVisibility(View.VISIBLE);
                             spinner.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(activity, "Tweet succeeded", Toast.LENGTH_SHORT).show();
