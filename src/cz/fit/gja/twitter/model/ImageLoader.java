@@ -14,11 +14,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +56,8 @@ public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
     protected void onPostExecute(Bitmap bitmap) {
         images.put(url, bitmap);
         view.setImageBitmap(bitmap);
-        progressBar.setVisibility(View.GONE);
+        if (progressBar != null)
+            progressBar.setVisibility(View.GONE);
         //view.setVisibility(View.VISIBLE);
     }
 }

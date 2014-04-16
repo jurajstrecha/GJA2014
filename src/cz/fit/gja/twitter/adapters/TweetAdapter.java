@@ -95,11 +95,16 @@ public class TweetAdapter extends BaseAdapter {
 
         imageView = (ImageView) view.findViewById(R.id.tweet_portrait);
         if (imageView != null) {
-            if (PortraitLoader.hasPortrait(user.getScreenName())) {
-                imageView.setImageBitmap(PortraitLoader.getPortrait(user.getScreenName()));
-            } else {
-                final Handler refresh = new Handler(Looper.getMainLooper());
-                new PortraitLoader(user, imageView, refresh).execute();
+            try {
+                URL url = new URL(user.getBiggerProfileImageURL());
+                if (ImageLoader.hasImage(url)) {
+                    imageView.setImageBitmap(ImageLoader.getImage(url));
+                } else {
+                    new ImageLoader(imageView, null, url).execute();
+                }
+            } catch (MalformedURLException e) {
+                //e.printStackTrace();
+                Log.e("Wrong image url", e.getMessage());
             }
         }
 
@@ -111,27 +116,28 @@ public class TweetAdapter extends BaseAdapter {
             if (mediaEntities.length >= 1) {
                 try {
                     URL url = new URL(mediaEntities[0].getMediaURL());
-                    // if (mediaEntities[0].getType() == "photo") {
-                    if (ImageLoader.hasImage(url)) {
-                        imageView.setImageBitmap(ImageLoader.getImage(url));
-                    } else {
-                        progressBar.setVisibility(View.VISIBLE);
-                        new ImageLoader(imageView, progressBar, url).execute();
-                    }
-                    imageView.setOnClickListener(new View.OnClickListener(){
-                        public void onClick(View v){
-                            Intent intent = new Intent();
-                            intent.setAction(Intent.ACTION_VIEW);
-                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                            if (mediaEntities[0].getExpandedURL() != null)
-                                intent.setData(Uri.parse(mediaEntities[0].getExpandedURL()));
-                            else
-                                intent.setData(Uri.parse(mediaEntities[0].getURL()));
-                            context.startActivity(intent);
+                    if (mediaEntities[0].getType().equals("photo")) {
+                        if (ImageLoader.hasImage(url)) {
+                            imageView.setImageBitmap(ImageLoader.getImage(url));
+                        } else {
+                            progressBar.setVisibility(View.VISIBLE);
+                            new ImageLoader(imageView, progressBar, url).execute();
                         }
-                    });
-                    
-                    // }
+                        imageView.setOnClickListener(new View.OnClickListener() {
+
+                            public void onClick(View v) {
+                                Intent intent = new Intent();
+                                intent.setAction(Intent.ACTION_VIEW);
+                                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                if (mediaEntities[0].getExpandedURL() != null)
+                                    intent.setData(Uri.parse(mediaEntities[0].getExpandedURL()));
+                                else
+                                    intent.setData(Uri.parse(mediaEntities[0].getURL()));
+                                context.startActivity(intent);
+                            }
+                        });
+
+                    }
                 } catch (MalformedURLException e) {
                     Log.e("Wrong image url", e.getMessage());
                 }
@@ -144,9 +150,9 @@ public class TweetAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, TweetActivity.class);
-				intent.putExtra("tweet", "@" + user.getScreenName() + " ");
-				intent.putExtra("replyToId", status.getId());
-				intent.putExtra("replyToText", status.getText());
+                intent.putExtra("tweet", "@" + user.getScreenName() + " ");
+                intent.putExtra("replyToId", status.getId());
+                intent.putExtra("replyToText", status.getText());
                 context.startActivity(intent);
                 // refresh)).execute();
             }
