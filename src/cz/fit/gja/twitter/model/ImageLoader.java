@@ -10,21 +10,29 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
 
     private ImageView           view;
     private ProgressBar         progressBar;
     private URL                 url;
-    protected static Map<URL, Bitmap> images = new HashMap<URL, Bitmap>();
+    // maximum amount of device memory avalible for program use
+    protected static int maxMemory =  (int) (Runtime.getRuntime().maxMemory() / 1024);
+    // use 1/8 of the avalible memory for bitmap caching
+    // the use of LruCache prevents OutOfMemory exception causing application crash,
+    // because it frees oldest entry when the buffer size is reached 
+    protected static LruCache<URL, Bitmap> images = new LruCache<URL, Bitmap>(maxMemory / 8) {
+    	protected int sizeOf(URL key, Bitmap bitmap) {
+    		return bitmap.getByteCount() / 1024;
+    	}
+    };
 
     public ImageLoader(ImageView view, ProgressBar progressBar, URL url) {
         this.view = view;
@@ -33,7 +41,7 @@ public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
     }
 
     public static boolean hasImage(URL url) {
-        return images.containsKey(url);
+        return images.get(url) != null;
     }
 
     public static Bitmap getImage(URL url) {
