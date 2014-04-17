@@ -15,7 +15,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:paddingTop="40dp"
-        android:textColor="#777" />
+        android:textColor="#777"
+        android:linksClickable="true" />
 
     <ProgressBar
         android:id="@+id/tweets_progressBar"

@@ -22,6 +22,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,7 +111,17 @@ public class TweetAdapter extends BaseAdapter {
 
         textView = (TextView) view.findViewById(R.id.tweet_text);
         if (textView != null) {
-            textView.setText(status.getText());
+        	// if the tweet text contains URL addresses, make them clickable and open them in a web browser
+        	textView.setMovementMethod(LinkMovementMethod.getInstance());
+        	String text = status.getText();
+        	if (text.contains("http://")) {
+        		// replace plaintext URL with hyperlink surrounded by HTML marks for link
+        		text = text.replaceAll("\\b(http://[^\\s]+)\\b", "<a href=\"$1\">$1</a>");
+        	}
+
+            // transform HTML formating to clickable text in text view
+            textView.setText(Html.fromHtml(text));
+
         }
 
         imageView = (ImageView) view.findViewById(R.id.tweet_portrait);
@@ -212,6 +224,8 @@ public class TweetAdapter extends BaseAdapter {
         return i;
     }
 
+    
+    
     /**
      * AsyncTask to load Timeline
      * */
