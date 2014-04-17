@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ public class TimelineActivity extends LoggedActivity {
     private ListView         tweetList;
     private TweetAdapter     tweetAdapter;
     private TimelineActivity timelineActivity;
+    private final int 		 INIT_TIMELINE_SIZE = 20;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,30 @@ public class TimelineActivity extends LoggedActivity {
 
         tweetAdapter = new TweetAdapter(timelineActivity, twitter);
         tweetList.setAdapter(tweetAdapter);
+        
+        // when the user scrolls down and reaches the end of the list view, new tweets are loaded and displayed
+        tweetList.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// start loading new tweets a little earlier before the last tweet in the list is displayed
+				final int lastItem = firstVisibleItem + visibleItemCount;
+				if (lastItem == totalItemCount &&
+						        !tweetAdapter.isTimelineLoading() &&
+						        lastItem >= INIT_TIMELINE_SIZE) { 
+
+					tweetAdapter.loadMoreTimelineTweets();
+				}
+				
+			}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				; // do nothing
+			}
+        	
+        });
         
     }
     

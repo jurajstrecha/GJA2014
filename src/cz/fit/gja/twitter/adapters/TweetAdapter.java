@@ -13,8 +13,8 @@ import java.util.Locale;
 
 import cz.fit.gja.twitter.R;
 import cz.fit.gja.twitter.model.ImageLoader;
-import cz.fit.gja.twitter.model.PortraitLoader;
 import twitter4j.MediaEntity;
+import twitter4j.Paging;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -22,8 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +39,11 @@ public class TweetAdapter extends BaseAdapter {
     protected Twitter                twitter;
     protected LayoutInflater         layoutInflater;
     protected List<twitter4j.Status> statuses = new ArrayList<twitter4j.Status>();
-
+    // flag represents that there is a loading of next page of tweets in progress
+    private boolean					 loadingTimeline = false;
+    // number of tweet pages already loaded to the timeline
+    private int 					 pageCounter = 1;
+    
     public TweetAdapter(Context context, Twitter twitter) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
@@ -50,6 +52,23 @@ public class TweetAdapter extends BaseAdapter {
         new LoadTimeline().execute();
     }
 
+    /**
+     * If loading is in progress right now, flag is set.
+     * 
+     * @return True if loading is in progress, false otherwise
+     */
+    public boolean isTimelineLoading() {
+    	return loadingTimeline;
+    }
+    
+    /**
+     * Asynchronously loads next page of tweets to the tweets list 
+     * 
+     */
+    public void loadMoreTimelineTweets() {
+   		new LoadMoreTweets().execute();
+    }
+    
     @Override
     public int getCount() {
         return this.statuses.size();
@@ -202,6 +221,7 @@ public class TweetAdapter extends BaseAdapter {
          * Getting Timeline
          */
         protected List<twitter4j.Status> doInBackground(Void... args) {
+        	loadingTimeline = true;
             List<twitter4j.Status> statuses = null;
             try {
                 statuses = twitter.getHomeTimeline();
@@ -218,6 +238,40 @@ public class TweetAdapter extends BaseAdapter {
             statuses = _statuses;
             notifyDataSetChanged();
             super.onPostExecute(_statuses);
+            loadingTimeline = false;
         }
+    }
+    
+    /**
+     * Asynchronous load of new tweets to the timeline on scroll when the end of list is reached
+     *
+     */
+    private class LoadMoreTweets extends AsyncTask<Void, Void, List<twitter4j.Status>> {
+    	protected void onPreExecute() {
+    		if (isTimelineLoading())
+    			cancel(true);
+    		else {
+    			loadingTimeline = true;
+    		}
+    	}
+    	
+		@Override
+		protected List<twitter4j.Status> doInBackground(Void... arg0) {
+            try {
+                return twitter.getHomeTimeline(new Paging(++pageCounter));
+            } catch (TwitterException e) {
+                Log.d("Twitter getHomeTimeline Error", e.getMessage());
+                return null;
+            }
+		}
+    	
+		protected void onPostExecute(List<twitter4j.Status> _statuses) {
+			if (_statuses != null) {
+				statuses.addAll(_statuses);
+				notifyDataSetChanged();
+				super.onPostExecute(_statuses);
+			}
+			loadingTimeline = false;
+		}
     }
 }
