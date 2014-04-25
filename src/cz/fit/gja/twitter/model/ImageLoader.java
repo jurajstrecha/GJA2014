@@ -64,8 +64,9 @@ public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
     protected void onPostExecute(Bitmap bitmap) {
         images.put(url, bitmap);
         view.setImageBitmap(bitmap);
-        if (progressBar != null)
+        if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
+        }
         //view.setVisibility(View.VISIBLE);
     }
 }

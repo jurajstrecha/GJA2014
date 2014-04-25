@@ -1,8 +1,6 @@
 package cz.fit.gja.twitter;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -11,11 +9,9 @@ import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 import cz.fit.gja.twitter.adapters.FavoritesAdapter;
 
-public class FavoritesActivity extends LoggedActivity {
+public class FavoritesActivity extends TimelineActivity {
 	private FavoritesActivity 		favoritesActivity;
-	private ListView 					favoritesList;
 	private FavoritesAdapter 		favoritesAdapter;
-	private  int 							INIT_TIMELINE_SIZE = 20;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,16 +25,16 @@ public class FavoritesActivity extends LoggedActivity {
         //final ProgressBar progressBar = (ProgressBar) currentView.findViewById(R.id.tweets_progressBar);
         final TextView empty = (TextView) currentView.findViewById(R.id.tweets_empty);
         empty.setText(R.string.tweets_no_tweets);
-        empty.setVisibility(View.GONE);
+        //empty.setVisibility(View.GONE);
 
-        favoritesList = (ListView) currentView.findViewById(R.id.tweets);
-        favoritesList.setScrollContainer(false);
+        tweetList = (ListView) currentView.findViewById(R.id.tweets);
+        tweetList.setScrollContainer(false);
 
-        favoritesAdapter = new FavoritesAdapter(favoritesActivity, twitter); 
-        favoritesList.setAdapter(favoritesAdapter);
+        favoritesAdapter = new FavoritesAdapter(favoritesActivity, twitter, this); 
+        tweetList.setAdapter(favoritesAdapter);
 
         // when the user scrolls down and reaches the end of the list view, new tweets are loaded and displayed
-        favoritesList.setOnScrollListener(new OnScrollListener() {
+        tweetList.setOnScrollListener(new OnScrollListener() {
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
@@ -63,19 +59,27 @@ public class FavoritesActivity extends LoggedActivity {
         
     }
     
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.timeline_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    /**
+     * From adapter set the visibility of the timeline message announcing that there are no tweet loaded
+     * 
+     */
+    public void setNoTweetsMessageVisibility(boolean value) {
+    	View currentView = this.findViewById(android.R.id.content);
+    	final TextView empty = (TextView) currentView.findViewById(R.id.tweets_empty);
+    	if (value)
+    		empty.setVisibility(View.VISIBLE);
+    	else
+    		empty.setVisibility(View.GONE);
     }
+    
+    
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.tweets_reload:
-            favoritesAdapter = new FavoritesAdapter(favoritesActivity, twitter);
-            favoritesList.setAdapter(favoritesAdapter);
+            favoritesAdapter = new FavoritesAdapter(favoritesActivity, twitter, this);
+            tweetList.setAdapter(favoritesAdapter);
             return true;
         default:
             return super.onOptionsItemSelected(item);

@@ -37,14 +37,14 @@ import cz.fit.gja.twitter.TweetActivity;
 
 public class TweetAdapter extends BaseAdapter {
 
-    protected Context                context;
-    protected Twitter                twitter;
+    protected Context                    context;
+    protected Twitter                     twitter;
     protected LayoutInflater         layoutInflater;
     private List<twitter4j.Status> statuses = new ArrayList<twitter4j.Status>();
     // flag represents that there is a loading of next page of tweets in progress
-    private boolean					 loadingTimeline = false;
+    private boolean					      loadingTimeline = false;
     // number of tweet pages already loaded to the timeline
-    private int 					 pageCounter = 1;
+    private int 					              pageCounter = 1;
     
     public TweetAdapter(Context context, Twitter twitter) {
         this.context = context;
@@ -114,9 +114,9 @@ public class TweetAdapter extends BaseAdapter {
         	// if the tweet text contains URL addresses, make them clickable and open them in a web browser
         	textView.setMovementMethod(LinkMovementMethod.getInstance());
         	String text = status.getText();
-        	if (text.contains("http://") || text.contains("https://")) {
+        	if (text.contains("http://")) {
         		// replace plaintext URL with hyperlink surrounded by HTML marks for link
-        		text = text.replaceAll("\\b((http|https)://[^\\s]+)\\b", "<a href=\"$1\">$1</a>");
+        		text = text.replaceAll("\\b(http://[^\\s]+)\\b", "<a href=\"$1\">$1</a>");
         	}
 
             // transform HTML formating to clickable text in text view
