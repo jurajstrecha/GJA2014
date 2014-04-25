@@ -1,44 +1,44 @@
 package cz.fit.gja.twitter;
 
-import cz.fit.gja.twitter.adapters.TweetAdapter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AbsListView.OnScrollListener;
+import cz.fit.gja.twitter.adapters.FavoritesAdapter;
 
-public class TimelineActivity extends LoggedActivity {
-
-    protected ListView         tweetList;
-    protected TweetAdapter     tweetAdapter;
-    private TimelineActivity   timelineActivity;
-    protected final int		   INIT_TIMELINE_SIZE = 20;
-
+public class FavoritesActivity extends LoggedActivity {
+	private FavoritesActivity 		favoritesActivity;
+	private ListView 					favoritesList;
+	private FavoritesAdapter 		favoritesAdapter;
+	private  int 							INIT_TIMELINE_SIZE = 20;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeline);
-        setTitle(R.string.title_timeline);
-        timelineActivity = this;
-
+        setTitle(R.string.title_favorites);
+        favoritesActivity = this;
+        
         View currentView = this.findViewById(android.R.id.content);
         //final ProgressBar progressBar = (ProgressBar) currentView.findViewById(R.id.tweets_progressBar);
         final TextView empty = (TextView) currentView.findViewById(R.id.tweets_empty);
         empty.setText(R.string.tweets_no_tweets);
         empty.setVisibility(View.GONE);
 
-        tweetList = (ListView) currentView.findViewById(R.id.tweets);
-        tweetList.setScrollContainer(false);
+        favoritesList = (ListView) currentView.findViewById(R.id.tweets);
+        favoritesList.setScrollContainer(false);
 
-        tweetAdapter = new TweetAdapter(timelineActivity, twitter);
-        tweetList.setAdapter(tweetAdapter);
-        
+        favoritesAdapter = new FavoritesAdapter(favoritesActivity, twitter); 
+        favoritesList.setAdapter(favoritesAdapter);
+
         // when the user scrolls down and reaches the end of the list view, new tweets are loaded and displayed
-        tweetList.setOnScrollListener(new OnScrollListener() {
+        favoritesList.setOnScrollListener(new OnScrollListener() {
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
@@ -46,10 +46,10 @@ public class TimelineActivity extends LoggedActivity {
 				// start loading new tweets a little earlier before the last tweet in the list is displayed
 				final int lastItem = firstVisibleItem + visibleItemCount;
 				if (lastItem == totalItemCount &&
-						        !tweetAdapter.isTimelineLoading() &&
+						        !favoritesAdapter.isFavoritesLoading() &&
 						        lastItem >= INIT_TIMELINE_SIZE) { 
 
-					tweetAdapter.loadMoreTimelineTweets();
+					favoritesAdapter.loadMoreFavoriteTweets();
 				}
 				
 			}
@@ -74,11 +74,11 @@ public class TimelineActivity extends LoggedActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.tweets_reload:
-            tweetAdapter = new TweetAdapter(timelineActivity, twitter);
-            tweetList.setAdapter(tweetAdapter);
+            favoritesAdapter = new FavoritesAdapter(favoritesActivity, twitter);
+            favoritesList.setAdapter(favoritesAdapter);
             return true;
         default:
             return super.onOptionsItemSelected(item);
         }
-    }
+    }    
 }

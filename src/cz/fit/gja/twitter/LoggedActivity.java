@@ -89,6 +89,9 @@ abstract public class LoggedActivity extends BaseActivity {
         case R.id.action_account:
             startActivity(new Intent(this, AccountActivity.class));
             return true;
+        case R.id.action_favorites:
+        	startActivity(new Intent(this, FavoritesActivity.class));
+        	return true;
         case R.id.action_logout:
             logoutFromTwitter();
             startActivity(new Intent(this, LoginActivity.class));

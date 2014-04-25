@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.fit.gja.twitter.adapters;
 
 import java.net.MalformedURLException;
@@ -12,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 import cz.fit.gja.twitter.R;
+import cz.fit.gja.twitter.TweetActivity;
 import cz.fit.gja.twitter.model.ImageLoader;
 import twitter4j.MediaEntity;
 import twitter4j.Paging;
@@ -33,54 +30,40 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import cz.fit.gja.twitter.TweetActivity;
 
-public class TweetAdapter extends BaseAdapter {
-
-    protected Context                context;
-    protected Twitter                twitter;
-    protected LayoutInflater         layoutInflater;
-    private List<twitter4j.Status> statuses = new ArrayList<twitter4j.Status>();
-    // flag represents that there is a loading of next page of tweets in progress
-    private boolean					 loadingTimeline = false;
-    // number of tweet pages already loaded to the timeline
-    private int 					 pageCounter = 1;
-    
-    public TweetAdapter(Context context, Twitter twitter) {
+public class FavoritesAdapter extends BaseAdapter {
+	private Context						  context;
+	private LayoutInflater 			  layoutInflater;
+	private Twitter						  twitter;
+	private List<twitter4j.Status> favoriteStatuses = new ArrayList<twitter4j.Status>();
+	private boolean              		  loadingFavoriteTweets = false;
+	private int 				   				  favoritePageCounter = 1;
+	
+	public FavoritesAdapter(Context context, Twitter twitter) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.twitter = twitter;
-
-        new LoadTimeline().execute();
-    }
-
+        
+		new LoadFavorites().execute();
+	}
+	
+	/**
+	 * Checks whether favorite tweets list is being loaded or not
+	 * 
+	 * @return true if tweets loading in progress, false otherwise
+	 */
+	public boolean isFavoritesLoading() {
+		return loadingFavoriteTweets;
+	}
+	
     /**
-     * If loading is in progress right now, flag is set.
-     * 
-     * @return True if loading is in progress, false otherwise
-     */
-    public boolean isTimelineLoading() {
-    	return loadingTimeline;
-    }
-    
-    /**
-     * Asynchronously loads next page of tweets to the tweets list 
+     * Asynchronously loads next page of favorite tweets to the favorite tweets list 
      * 
      */
-    public void loadMoreTimelineTweets() {
-   		new LoadMoreTweets().execute();
+    public void loadMoreFavoriteTweets() {
+   		new LoadMoreFavorites().execute();
     }
-    
-    @Override
-    public int getCount() {
-        return this.statuses.size();
-    }
-
-    @Override
-    public twitter4j.Status getItem(int i) {
-        return this.statuses.get(i);
-    }
-
+	  
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         // final TweetAdapter tweetAdapter = this;
@@ -213,79 +196,82 @@ public class TweetAdapter extends BaseAdapter {
 
         return view;
     }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    
     
     /**
      * AsyncTask to load Timeline
      * */
-    private class LoadTimeline extends AsyncTask<Void, Void, List<twitter4j.Status>> {
-
-        /**
-         * Getting Timeline
-         */
+    private class LoadFavorites extends AsyncTask<Void, Void, List<twitter4j.Status>> {
+    	protected void onPreExecute() {
+    		if (isFavoritesLoading())
+    			cancel(true);
+    		else {
+    			loadingFavoriteTweets = true;
+    		}    		
+    	}
+    	
         protected List<twitter4j.Status> doInBackground(Void... args) {
-        	loadingTimeline = true;
-            List<twitter4j.Status> statuses = null;
             try {
-                statuses = twitter.getHomeTimeline();
+                return twitter.getFavorites();
             } catch (TwitterException e) {
-                Log.d("Twitter getHomeTimeline Error", e.getMessage());
+                Log.d("Twitter getFavorites Error", e.getMessage());
+                return null;
             }
-            return statuses;
+
         }
 
-        /**
-         * After completing background task.
-         */
         protected void onPostExecute(List<twitter4j.Status> _statuses) {
-            statuses = _statuses;
+            favoriteStatuses = _statuses;
             notifyDataSetChanged();
             super.onPostExecute(_statuses);
-            loadingTimeline = false;
+            loadingFavoriteTweets = false;
         }
     }
-    
+
     /**
      * Asynchronous load of new tweets to the timeline on scroll when the end of list is reached
      *
      */
-    private class LoadMoreTweets extends AsyncTask<Void, Void, List<twitter4j.Status>> {
+    private class LoadMoreFavorites extends AsyncTask<Void, Void, List<twitter4j.Status>> {
     	protected void onPreExecute() {
-    		if (isTimelineLoading())
+    		if (isFavoritesLoading())
     			cancel(true);
     		else {
-    			loadingTimeline = true;
+    			loadingFavoriteTweets = true;
     		}
     	}
     	
 		@Override
 		protected List<twitter4j.Status> doInBackground(Void... arg0) {
             try {
-                return twitter.getHomeTimeline(new Paging(++pageCounter));
+                return twitter.getFavorites(new Paging(++favoritePageCounter));
             } catch (TwitterException e) {
-                Log.d("Twitter getHomeTimeline Error", e.getMessage());
+                Log.d("Twitter getFavorites Error", e.getMessage());
                 return null;
             }
 		}
     	
 		protected void onPostExecute(List<twitter4j.Status> _statuses) {
 			if (_statuses != null) {
-				statuses.addAll(_statuses);
+				favoriteStatuses.addAll(_statuses);
 				notifyDataSetChanged();
 				super.onPostExecute(_statuses);
 			}
-			loadingTimeline = false;
+			loadingFavoriteTweets = false;
 		}
+    }
+    
+    @Override
+    public int getCount() {
+        return this.favoriteStatuses.size();
+    }
+
+    @Override
+    public twitter4j.Status getItem(int i) {
+        return this.favoriteStatuses.get(i);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return i;
     }
 }
