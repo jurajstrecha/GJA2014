@@ -114,9 +114,9 @@ public class TweetAdapter extends BaseAdapter {
         	// if the tweet text contains URL addresses, make them clickable and open them in a web browser
         	textView.setMovementMethod(LinkMovementMethod.getInstance());
         	String text = status.getText();
-        	if (text.contains("http://")) {
-        		// replace plaintext URL with hyperlink surrounded by HTML marks for link
-        		text = text.replaceAll("\\b(http://[^\\s]+)\\b", "<a href=\"$1\">$1</a>");
+        	if (text.contains("http://") || text.contains("https://")) {
+	          // replace plaintext URL with hyperlink surrounded by HTML marks for link
+              text = text.replaceAll("\\b((http|https)://[^\\s]+)\\b", "<a href=\"$1\">$1</a>");
         	}
 
             // transform HTML formating to clickable text in text view
