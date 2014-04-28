@@ -16,7 +16,7 @@ public class TimelineActivity extends LoggedActivity {
     private ListView         tweetList;
     private TweetAdapter     tweetAdapter;
     private TimelineActivity timelineActivity;
-    private final int 		 INIT_TIMELINE_SIZE = 20;
+    private final int 		 INIT_TIMELINE_SIZE = 19;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,6 @@ public class TimelineActivity extends LoggedActivity {
 				if (lastItem == totalItemCount &&
 						        !tweetAdapter.isTimelineLoading() &&
 						        lastItem >= INIT_TIMELINE_SIZE) { 
-
 					tweetAdapter.loadMoreTimelineTweets();
 				}
 				
