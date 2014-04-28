@@ -1,6 +1,7 @@
 package cz.fit.gja.twitter;
 
 import cz.fit.gja.twitter.adapters.TweetAdapter;
+import cz.fit.gja.twitter.model.SetFavoriteTweet;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,7 +61,6 @@ public class TimelineActivity extends LoggedActivity {
 			}
         	
         });
-        
     }
     
     @Override
@@ -81,4 +81,15 @@ public class TimelineActivity extends LoggedActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+    
+    /**
+     *  Changes appearance of the button and Favorite status of the tweet when the button is pressed
+     *  
+     * @param view button that has been touched
+     */
+    public void makeFavorite(View view) {
+    		new SetFavoriteTweet(tweetAdapter.getTwitter(), view).execute();
+    }
 }
+
+

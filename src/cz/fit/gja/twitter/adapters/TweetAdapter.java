@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import cz.fit.gja.twitter.R;
 import cz.fit.gja.twitter.model.ImageLoader;
+import cz.fit.gja.twitter.view.IdButton;
 import twitter4j.MediaEntity;
 import twitter4j.Paging;
 import twitter4j.Twitter;
@@ -53,6 +54,15 @@ public class TweetAdapter extends BaseAdapter {
 
         new LoadTimeline().execute();
     }
+    
+    /**
+     * Return obtained twitter instance. Method is used for example by the Favorite button.
+     * 
+     * @return twitter instance
+     */
+    public Twitter getTwitter() {
+    	return this.twitter;
+    }
 
     /**
      * If loading is in progress right now, flag is set.
@@ -88,6 +98,7 @@ public class TweetAdapter extends BaseAdapter {
         ImageView imageView;
         ProgressBar progressBar;
         Button button;
+        IdButton idButton;
 
         final twitter4j.Status status = getItem(i);
         final User user = status.getUser();
@@ -200,17 +211,11 @@ public class TweetAdapter extends BaseAdapter {
             }
         });
 
-        button = (Button) view.findViewById(R.id.tweet_favorite);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // final Handler refresh = new Handler(Looper.getMainLooper());
-                // (new UnfollowUser(twitter, user.getScreenName(), adapter,
-                // refresh)).execute();
-            }
-        });
-
+        // set status and tweet ID of the tweet that belongs to the Favorite button
+        idButton = (IdButton) view.findViewById(R.id.tweet_favorite);
+        idButton.setTweetId(status.getId());
+        idButton.setChecked(status.isFavorited());
+        
         return view;
     }
 

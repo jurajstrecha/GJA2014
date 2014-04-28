@@ -7,6 +7,7 @@
     <string name="msg_no_connection">No connection available</string>
     <string name="msg_already_logged">Already Logged into twitter</string>
     <string name="msg_login_failed">Login failed</string>
+    <string name="msg_favorite_failed">Unable to change favorite</string>
 
     <!-- Login -->
     <string name="button_login">Login with Twitter</string>
@@ -35,6 +36,7 @@
     <string name="tweet_action_reply">Reply</string>
     <string name="tweet_action_retweet">Retweet</string>
     <string name="tweet_action_favorite">Favorite</string>
+    <string name="tweet_action_favorited">Unfavorite</string>
     <string name="tweets_no_tweets">No tweets</string>
     <string name="tweets_reload">Reload</string>
     
