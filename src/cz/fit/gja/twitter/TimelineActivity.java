@@ -16,7 +16,7 @@ public class TimelineActivity extends LoggedActivity {
     protected ListView         tweetList;
     protected TweetAdapter     tweetAdapter;
     private TimelineActivity   timelineActivity;
-    protected final int		   INIT_TIMELINE_SIZE = 20;
+    protected final int		   INIT_TIMELINE_SIZE = 19;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
