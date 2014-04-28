@@ -37,14 +37,14 @@ import cz.fit.gja.twitter.TweetActivity;
 
 public class TweetAdapter extends BaseAdapter {
 
-    protected Context                context;
-    protected Twitter                twitter;
+    protected Context                    context;
+    protected Twitter                     twitter;
     protected LayoutInflater         layoutInflater;
-    protected List<twitter4j.Status> statuses = new ArrayList<twitter4j.Status>();
+    private List<twitter4j.Status> statuses = new ArrayList<twitter4j.Status>();
     // flag represents that there is a loading of next page of tweets in progress
-    private boolean					 loadingTimeline = false;
+    private boolean					      loadingTimeline = false;
     // number of tweet pages already loaded to the timeline
-    private int 					 pageCounter = 1;
+    private int 					              pageCounter = 1;
     
     public TweetAdapter(Context context, Twitter twitter) {
         this.context = context;
