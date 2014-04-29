@@ -1,6 +1,7 @@
 package cz.fit.gja.twitter;
 
 import cz.fit.gja.twitter.adapters.TweetAdapter;
+import cz.fit.gja.twitter.model.Retweet;
 import cz.fit.gja.twitter.model.SetFavoriteTweet;
 import android.os.Bundle;
 import android.view.Menu;
@@ -88,6 +89,16 @@ public class TimelineActivity extends LoggedActivity {
      */
     public void makeFavorite(View view) {
     		new SetFavoriteTweet(tweetAdapter.getTwitter(), view).execute();
+    }
+    
+    /**
+     * On-click handler for the Retweet button
+     * 
+     * @param view button that has been touched
+     */
+    public void doRetweet(View view) {
+    	view.setClickable(false);
+    	new Retweet(view, tweetAdapter.getTwitter()).execute();
     }
 }
 

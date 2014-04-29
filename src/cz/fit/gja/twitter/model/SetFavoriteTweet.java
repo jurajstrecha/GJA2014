@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 import cz.fit.gja.twitter.view.IdButton;
 
-public class SetFavoriteTweet extends AsyncTask<Void, Void, Boolean> {
+public class SetFavoriteTweet extends AsyncTask<Void, Void, Void> {
 	private Twitter twitter;
 	// represents the Favorite button, instance of the IdButton class
 	private View view;
@@ -26,7 +26,7 @@ public class SetFavoriteTweet extends AsyncTask<Void, Void, Boolean> {
 	}
 	
 	@Override
-	protected Boolean doInBackground(Void... arg0) {
+	protected Void doInBackground(Void... arg0) {
 		IdButton idButton = (IdButton) this.view; 
 		
 		// User requests to mark given tweet as favorite
@@ -35,7 +35,6 @@ public class SetFavoriteTweet extends AsyncTask<Void, Void, Boolean> {
 				twitter.createFavorite(idButton.getTweetId());
 			} catch (TwitterException te) {
 				Toast.makeText(this.view.getContext(), R.string.msg_favorite_failed, Toast.LENGTH_LONG).show();
-				return false;
 			}
 
 		// User requests to unmark given tweet as favorite
@@ -44,23 +43,8 @@ public class SetFavoriteTweet extends AsyncTask<Void, Void, Boolean> {
 				twitter.destroyFavorite(idButton.getTweetId());
 			} catch (TwitterException te) {
 				Toast.makeText(this.view.getContext(), R.string.msg_favorite_failed, Toast.LENGTH_LONG).show();
-				return false;
 			}
 		}
-		return true;
-		
-	}
-	
-	protected void onPostExecute(Boolean result) {
-		IdButton idButton = (IdButton) this.view;
-		if (result) {
-			// if requested operation succeeded change button appearance accordingly,
-			// flip button status
-			idButton = (IdButton) this.view;
-			if (idButton.isChecked())
-				idButton.setChecked(false);
-			else
-				idButton.setChecked(true);
-		}
+		return null;	
 	}
 }

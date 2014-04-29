@@ -196,21 +196,16 @@ public class TweetAdapter extends BaseAdapter {
                 intent.putExtra("replyToId", status.getId());
                 intent.putExtra("replyToText", status.getText());
                 context.startActivity(intent);
-                // refresh)).execute();
             }
         });
 
-        button = (Button) view.findViewById(R.id.tweet_retweet);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // final Handler refresh = new Handler(Looper.getMainLooper());
-                // (new UnfollowUser(twitter, user.getScreenName(), adapter,
-                // refresh)).execute();
-            }
-        });
-
+        // set tweet ID and clickable status of the retweet button that belongs to the status
+        // if the status has already been retweeted, user won't be able to click button again
+        idButton = (IdButton) view.findViewById(R.id.tweet_retweet);
+        idButton.setTweetId(status.getId());
+        idButton.setClickable(!status.isRetweeted());
+        idButton.setChecked(status.isRetweeted());
+        
         // set status and tweet ID of the tweet that belongs to the Favorite button
         idButton = (IdButton) view.findViewById(R.id.tweet_favorite);
         idButton.setTweetId(status.getId());
@@ -269,9 +264,8 @@ public class TweetAdapter extends BaseAdapter {
     	protected void onPreExecute() {
     		if (isTimelineLoading())
     			cancel(true);
-    		else {
+    		else
     			loadingTimeline = true;
-    		}
     	}
     	
 		@Override

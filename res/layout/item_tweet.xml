@@ -86,12 +86,14 @@
             android:layout_height="wrap_content"
             android:text="@string/tweet_action_reply" />
 
-        <Button
+        <cz.fit.gja.twitter.view.IdButton
             android:id="@+id/tweet_retweet"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tweet_action_retweet" />
+			android:textOn="@string/tweet_action_retweeted"
+            android:textOff="@string/tweet_action_retweet"
+            android:onClick="doRetweet" />
 
         <cz.fit.gja.twitter.view.IdButton
             android:id="@+id/tweet_favorite"
