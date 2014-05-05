@@ -1,5 +1,15 @@
 package cz.fit.gja.twitter.view;
 
+/**
+ * File: MapButton.java
+ * 
+ *  Class represents button used to store one of two types of location data.
+ *  Boundries if user didn't provide exact geo position or exact coordinates
+ *  that belong to the tweet. When the button is pressed, data stored within
+ *  are passed to the underlying methods that creates map view according
+ *  to given coordinates or geo position points.  
+ */
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;

@@ -1,5 +1,16 @@
 package cz.fit.gja.twitter;
 
+/**
+ * File: TweetMapActivity.java
+ * 
+ *  Instance of this class receives numerical data representing position on the map.
+ *  On initialization instance of this class displays part of the map given
+ *  by the data contained wihtin a tweet. If user provided area boundries
+ *  information only, no marker will be placed to the map. If exact coordinates
+ *  are present blank default marker will be placed into the map and map camera
+ *  will be centered according to the marker.
+ */
+
 import android.os.Bundle;
 import android.widget.Toast;
 
