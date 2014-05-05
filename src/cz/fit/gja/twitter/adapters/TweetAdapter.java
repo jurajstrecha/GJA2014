@@ -10,10 +10,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import cz.fit.gja.twitter.R;
 import cz.fit.gja.twitter.model.ImageLoader;
 import cz.fit.gja.twitter.view.IdButton;
+import cz.fit.gja.twitter.view.MapButton;
+import twitter4j.GeoLocation;
 import twitter4j.MediaEntity;
 import twitter4j.Paging;
 import twitter4j.Twitter;
@@ -99,6 +100,7 @@ public class TweetAdapter extends BaseAdapter {
         ProgressBar progressBar;
         Button button;
         IdButton idButton;
+        MapButton mapButton;
 
         final twitter4j.Status status = getItem(i);
         final User user = status.getUser();
@@ -186,6 +188,33 @@ public class TweetAdapter extends BaseAdapter {
             }
         }
 
+        // if the tweet contains location data, map button is displayed
+        // under the tweet on the timeline and coordinates are stored within
+        // the button
+        mapButton = (MapButton) view.findViewById(R.id.tweet_map);
+
+        // tweet contains bounding box coordinates, not the exact location
+        if (status.getPlace() != null) {
+        	GeoLocation boundries[] =  status.getPlace().getBoundingBoxCoordinates()[0];
+        	mapButton.setBounds(new double[]{boundries[0].getLatitude(),
+        			                                                    	  boundries[0].getLongitude(),
+        			                                                          boundries[2].getLatitude(),
+        			                                                    	  boundries[2].getLongitude()});
+        	mapButton.setCoords(null);
+        	mapButton.setVisibility(View.VISIBLE);
+
+       	// exact location data avalible, center the map camera to its position  
+        } else if (status.getGeoLocation() != null) {
+        	GeoLocation location = status.getGeoLocation();
+        	mapButton.setBounds(null);
+        	mapButton.setCoords(new double[]{location.getLatitude(),location.getLongitude()});
+        	mapButton.setVisibility(View.VISIBLE);
+        	
+        // no location data avalible, hide map button
+        } else {
+        	mapButton.setVisibility(View.GONE);
+        }
+        
         button = (Button) view.findViewById(R.id.tweet_reply);
         button.setOnClickListener(new View.OnClickListener() {
 

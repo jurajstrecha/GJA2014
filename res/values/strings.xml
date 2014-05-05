@@ -32,6 +32,7 @@
     <string name="title_favorites">Favorites</string>
     <string name="title_account">Account</string>
     <string name="title_settings">Settings</string>
+    <string name="title_map">Map</string>
 
     <!-- Timeline -->
     <string name="tweet_action_reply">Reply</string>
@@ -39,6 +40,7 @@
     <string name="tweet_action_retweeted">Retweeted</string>
     <string name="tweet_action_favorite">Favorite</string>
     <string name="tweet_action_favorited">Unfavorite</string>
+    <string name="tweet_action_map">Map</string>
     <string name="tweets_no_tweets">No tweets</string>
     <string name="tweets_reload">Reload</string>
     
