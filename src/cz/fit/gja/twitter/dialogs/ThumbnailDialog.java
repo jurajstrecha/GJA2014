@@ -29,13 +29,12 @@ public class ThumbnailDialog extends DialogFragment {
         actions[0] = getString(R.string.tweet_thumbnail_clear);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getString(R.string.tweet_thumbnail_dialog))
-               .setItems(actions, new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.tweet_thumbnail_dialog)).setItems(actions, new DialogInterface.OnClickListener() {
 
-                   public void onClick(DialogInterface dialog, int which) {
-                       activity.clearImage();
-                   }
-               });
+            public void onClick(DialogInterface dialog, int which) {
+                activity.clearImage();
+            }
+        });
 
         return builder.create();
     }

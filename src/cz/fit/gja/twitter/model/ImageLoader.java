@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * AsyncTask for loading images on background
  */
 
 package cz.fit.gja.twitter.model;
@@ -52,14 +50,13 @@ public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(final Void... params) {
-
         try {
+            // Create image from url
             Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
             return bitmap;
         } catch (IOException e) {
             Log.e("ImageLoader Error", "> " + e.getMessage());
         }
-
         return null;
     }
 

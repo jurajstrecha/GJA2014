@@ -29,7 +29,7 @@ abstract public class LoggedActivity extends BaseActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
-        
+
         if (isTwitterLoggedInAlready()) {
             // Make twitter instance and get userId
             ConfigurationBuilder builder = new ConfigurationBuilder();
@@ -45,7 +45,8 @@ abstract public class LoggedActivity extends BaseActivity {
             User user;
             // Check login (tokens)
             try {
-                // If is there exception, something is wrong - for example wrong tokens are set
+                // If is there exception, something is wrong - for example wrong
+                // tokens are set
                 user = twitter.showUser(userId);
                 Log.d("twitter UserName", user.getName());
             } catch (TwitterException e) {
@@ -90,8 +91,8 @@ abstract public class LoggedActivity extends BaseActivity {
             startActivity(new Intent(this, AccountActivity.class));
             return true;
         case R.id.action_favorites:
-        	startActivity(new Intent(this, FavoritesActivity.class));
-        	return true;
+            startActivity(new Intent(this, FavoritesActivity.class));
+            return true;
         case R.id.action_logout:
             logoutFromTwitter();
             startActivity(new Intent(this, LoginActivity.class));

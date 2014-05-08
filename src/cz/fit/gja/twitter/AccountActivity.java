@@ -56,8 +56,7 @@ public class AccountActivity extends LoggedActivity {
 
     private Map<String, String> getAccountData() {
         if (userId == null) {
-            Toast.makeText(this, getString(R.string.account_msg_fetch_failed), Toast.LENGTH_LONG)
-                 .show();
+            Toast.makeText(this, getString(R.string.account_msg_fetch_failed), Toast.LENGTH_LONG).show();
             return null;
         }
 
@@ -71,8 +70,7 @@ public class AccountActivity extends LoggedActivity {
             accountData.put("website", user.getURL());
             accountData.put("description", user.getDescription());
         } catch (TwitterException ex) {
-            Toast.makeText(this, getString(R.string.account_msg_fetch_failed), Toast.LENGTH_LONG)
-                 .show();
+            Toast.makeText(this, getString(R.string.account_msg_fetch_failed), Toast.LENGTH_LONG).show();
             Logger.getLogger(AccountActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -100,14 +98,13 @@ public class AccountActivity extends LoggedActivity {
 
     private void submit() {
         try {
-            twitter.updateProfile(name.getText().toString(), website.getText().toString(),
-                                  location.getText().toString(), description.getText().toString());
+            twitter.updateProfile(name.getText().toString(), website.getText().toString(), location.getText().toString(), description.getText()
+                                                                                                                                     .toString());
 
             startActivity(new Intent(this, TimelineActivity.class));
             finish();
         } catch (TwitterException ex) {
-            Toast.makeText(this, getString(R.string.account_msg_update_failed), Toast.LENGTH_LONG)
-                 .show();
+            Toast.makeText(this, getString(R.string.account_msg_update_failed), Toast.LENGTH_LONG).show();
             Logger.getLogger(AccountActivity.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

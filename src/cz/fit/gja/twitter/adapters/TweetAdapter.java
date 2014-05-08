@@ -199,26 +199,25 @@ public class TweetAdapter extends BaseAdapter {
 
         // tweet contains bounding box coordinates, not the exact location
         if (status.getPlace() != null) {
-        	GeoLocation boundries[] =  status.getPlace().getBoundingBoxCoordinates()[0];
-        	mapButton.setBounds(new double[]{boundries[0].getLatitude(),
-        			                                                    	  boundries[0].getLongitude(),
-        			                                                          boundries[2].getLatitude(),
-        			                                                    	  boundries[2].getLongitude()});
-        	mapButton.setCoords(null);
-        	mapButton.setVisibility(View.VISIBLE);
+            GeoLocation boundries[] = status.getPlace().getBoundingBoxCoordinates()[0];
+            mapButton.setBounds(new double[] { boundries[0].getLatitude(), boundries[0].getLongitude(), boundries[2].getLatitude(),
+                    boundries[2].getLongitude() });
+            mapButton.setCoords(null);
+            mapButton.setVisibility(View.VISIBLE);
 
-       	// exact location data avalible, center the map camera to its position  
+            // exact location data avalible, center the map camera to its
+            // position
         } else if (status.getGeoLocation() != null) {
-        	GeoLocation location = status.getGeoLocation();
-        	mapButton.setBounds(null);
-        	mapButton.setCoords(new double[]{location.getLatitude(),location.getLongitude()});
-        	mapButton.setVisibility(View.VISIBLE);
-        	
-        // no location data avalible, hide map button
+            GeoLocation location = status.getGeoLocation();
+            mapButton.setBounds(null);
+            mapButton.setCoords(new double[] { location.getLatitude(), location.getLongitude() });
+            mapButton.setVisibility(View.VISIBLE);
+
+            // no location data avalible, hide map button
         } else {
-        	mapButton.setVisibility(View.GONE);
+            mapButton.setVisibility(View.GONE);
         }
-        
+
         button = (Button) view.findViewById(R.id.tweet_reply);
         button.setOnClickListener(new View.OnClickListener() {
 

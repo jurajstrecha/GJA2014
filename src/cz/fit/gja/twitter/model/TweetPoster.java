@@ -3,7 +3,6 @@ package cz.fit.gja.twitter.model;
 import android.graphics.Bitmap;
 import cz.fit.gja.twitter.TweetActivity;
 import cz.fit.gja.twitter.exceptions.SizeExceededException;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

@@ -81,19 +81,19 @@ abstract public class BaseActivity extends Activity {
             if (uri != null && uri.toString().startsWith(TWITTER_CALLBACK_URL)) {
                 // oAuth verifier
                 String verifier = uri.getQueryParameter(URL_TWITTER_OAUTH_VERIFIER);
-                
+
                 try {
                     // Get the access token
                     AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
-                    
+
                     // Shared Preferences
                     Editor e = mSharedPreferences.edit();
-                    
+
                     // After getting access token, access token secret
                     // store them in application preferences
                     e.putString(PREF_KEY_OAUTH_TOKEN, accessToken.getToken());
                     e.putString(PREF_KEY_OAUTH_SECRET, accessToken.getTokenSecret());
-                    
+
                     // Store login status - true
                     e.putBoolean(PREF_KEY_TWITTER_LOGIN, true);
                     e.commit(); // save changes
@@ -123,21 +123,21 @@ abstract public class BaseActivity extends Activity {
      */
     protected boolean isNetworkAvailable() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        
+
         if (cm == null)
             return false;
-        
+
         NetworkInfo i = cm.getActiveNetworkInfo();
-        
+
         if (i == null)
             return false;
-        
+
         if (!i.isConnected())
             return false;
-        
+
         if (!i.isAvailable())
             return false;
-        
+
         return true;
     }
 
@@ -147,7 +147,7 @@ abstract public class BaseActivity extends Activity {
             Toast.makeText(this, R.string.msg_no_connection, Toast.LENGTH_LONG).show();
             return;
         }
-        
+
         // Check if already logged in
         if (!isTwitterLoggedInAlready()) {
             ConfigurationBuilder builder = new ConfigurationBuilder();

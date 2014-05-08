@@ -8,8 +8,10 @@ public class Configuration {
     final private Integer short_url_length;
     final private Integer short_url_length_https;
 
-    public Configuration(Integer characters_reserved_per_media, Integer max_media_per_upload,
-                         Integer photo_size_limit, Integer short_url_length,
+    public Configuration(Integer characters_reserved_per_media,
+                         Integer max_media_per_upload,
+                         Integer photo_size_limit,
+                         Integer short_url_length,
                          Integer short_url_length_https) {
         this.characters_reserved_per_media = characters_reserved_per_media;
         this.max_media_per_upload = max_media_per_upload;

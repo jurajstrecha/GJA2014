@@ -13,25 +13,26 @@ import android.util.AttributeSet;
 import android.widget.ToggleButton;
 
 public class IdButton extends ToggleButton {
-	private long tweetID;
 
-	public IdButton(Context context) {
-		super(context);
-	}
+    private long tweetID;
 
-	public IdButton (Context context, AttributeSet attrs) {
-	    super(context, attrs);
-	}
-	
-	public IdButton (Context context, AttributeSet attrs, int defStyle) {
-	    super(context, attrs, defStyle);
-	}
-	
-	public void setTweetId(long newTweetId) {
-		this.tweetID = newTweetId;
-	}
-	
-	public long getTweetId() {
-		return this.tweetID;
-	}
+    public IdButton(Context context) {
+        super(context);
+    }
+
+    public IdButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public IdButton(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    public void setTweetId(long newTweetId) {
+        this.tweetID = newTweetId;
+    }
+
+    public long getTweetId() {
+        return this.tweetID;
+    }
 }

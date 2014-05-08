@@ -15,8 +15,7 @@ abstract public class ChangeRelationship extends AsyncTask<Void, Void, Void> {
     protected final UserAdapter       adapter;
     protected final Handler           refresh;
 
-    public ChangeRelationship(Twitter twitter, String screenName, UserAdapter adapter,
-                              Handler refresh) {
+    public ChangeRelationship(Twitter twitter, String screenName, UserAdapter adapter, Handler refresh) {
         this.twitter = twitter;
         this.screenName = screenName;
         this.adapter = adapter;

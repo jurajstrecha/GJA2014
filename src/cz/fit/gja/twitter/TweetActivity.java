@@ -211,8 +211,7 @@ public class TweetActivity extends LoggedActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
@@ -222,12 +221,10 @@ public class TweetActivity extends LoggedActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-            imageFileName,  /* prefix */
-            ".jpg",         /* suffix */
-            storageDir      /* directory */
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, /* prefix */
+                                         ".jpg", /* suffix */
+                                         storageDir /* directory */
         );
 
         // Save a file: path for use with ACTION_VIEW intents
@@ -270,13 +267,12 @@ public class TweetActivity extends LoggedActivity {
         return BitmapFactory.decodeFile(picturePath, options);
     }
 
-    public static Bitmap rotateBitmap(Bitmap source, float angle)
-    {
-          Matrix matrix = new Matrix();
-          matrix.postRotate(angle);
-          return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    public static Bitmap rotateBitmap(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -296,17 +292,17 @@ public class TweetActivity extends LoggedActivity {
                 e.printStackTrace();
             }
             attachedBitmap = decodeSampledBitmapFromPath(mCurrentPhotoPath, MAX_PICTURE_SIZE, MAX_PICTURE_SIZE);
-            switch(orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    attachedBitmap = rotateBitmap(attachedBitmap, 90);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    attachedBitmap = rotateBitmap(attachedBitmap, 180);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    attachedBitmap = rotateBitmap(attachedBitmap, 270);
-                    break;
-                // etc.
+            switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                attachedBitmap = rotateBitmap(attachedBitmap, 90);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                attachedBitmap = rotateBitmap(attachedBitmap, 180);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                attachedBitmap = rotateBitmap(attachedBitmap, 270);
+                break;
+            // etc.
             }
             imageView.setImageBitmap(attachedBitmap);
             // setThumbnail(attachedImage);

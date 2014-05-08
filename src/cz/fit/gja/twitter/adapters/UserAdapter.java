@@ -39,9 +39,9 @@ public class UserAdapter extends BaseAdapter {
     protected List<User>        list     = new ArrayList<User>();
     protected PortraitLoader    portraitLoader;
 
-    protected static List<Long> followed = new ArrayList<Long>();
     // as long as we only allow to see lists of current user
-    
+    protected static List<Long> followed = new ArrayList<Long>();
+
     public UserAdapter(Context context, Twitter twitter) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
