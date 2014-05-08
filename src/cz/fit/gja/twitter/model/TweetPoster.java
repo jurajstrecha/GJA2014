@@ -3,7 +3,6 @@ package cz.fit.gja.twitter.model;
 import android.graphics.Bitmap;
 import cz.fit.gja.twitter.TweetActivity;
 import cz.fit.gja.twitter.exceptions.SizeExceededException;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,6 +12,9 @@ import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
+/**
+ * Handles posting of a tweet
+ */
 public class TweetPoster {
 
     final private Twitter       twitter;
@@ -25,6 +27,13 @@ public class TweetPoster {
         this.status = new StatusUpdate(text);
     }
 
+	/**
+	 * Sets given bitmap as an image to be attached to tweet
+	 * 
+	 * @param image
+	 * @param tempDirectory
+	 * @throws IOException 
+	 */
     public void setImage(Bitmap image, File tempDirectory) throws IOException {
         File file = null;
         try {
@@ -48,10 +57,19 @@ public class TweetPoster {
         }
     }
 
+	/**
+	 * If the tweet is a reply to someone mark it as such
+	 * @param id 
+	 */
     public void setIsReplyTo(long id) {
         this.status.setInReplyToStatusId(id);
     }
 
+	/**
+	 * Sends the update
+	 * 
+	 * @param handler 
+	 */
     public void send(TweetActivity.OnTweetSubmitted handler) {
         final TweetActivity.OnTweetSubmitted callback = handler;
         (new Thread(new Runnable() {

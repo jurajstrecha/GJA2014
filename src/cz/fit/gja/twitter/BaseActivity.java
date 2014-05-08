@@ -20,6 +20,9 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ * Base activity class handling requests for Twitter authentication and network availablility
+ */
 abstract public class BaseActivity extends Activity {
 
     // App keys

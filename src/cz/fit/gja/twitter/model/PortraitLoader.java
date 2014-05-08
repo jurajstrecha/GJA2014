@@ -25,8 +25,9 @@ import java.util.logging.Logger;
 import twitter4j.User;
 
 /**
+ * Handles background loading of portraits
  * 
- * @author Nox
+ * Uses map userName => Bitmap to keep track of loaded portraits
  */
 public class PortraitLoader extends AsyncTask<Void, Void, Void> {
 

@@ -31,6 +31,9 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
+/**
+ * Handles displaying of lists of users
+ */
 public class UserAdapter extends BaseAdapter {
 
     protected Context           context;

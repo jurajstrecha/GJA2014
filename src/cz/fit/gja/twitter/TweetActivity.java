@@ -33,6 +33,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Activity for writing and posting new tweets and replies
+ */
 public class TweetActivity extends LoggedActivity {
 
     public interface OnTweetSubmitted {
@@ -42,14 +45,16 @@ public class TweetActivity extends LoggedActivity {
 
     static final int THUMBNAIL_SIZE        = 420;
     static final int MAX_PICTURE_SIZE      = 768;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_IMAGE_SELECT  = 2;
+    static final int REQUEST_IMAGE_CAPTURE = 1; // id for request
+    static final int REQUEST_IMAGE_SELECT  = 2; // id for request
 
+	// current values
     String           tweet                 = "";
     Bitmap           attachedBitmap;
     Long             replyToId;
     String           replyToText;
 
+	// objects in view
     EditText         textarea;
     ImageView        imageView;
     LinearLayout     form;
@@ -63,6 +68,7 @@ public class TweetActivity extends LoggedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_tweet);
 
+		// received data from caller
         Intent intent = this.getIntent();
         if (intent != null) {
             Bundle extras = intent.getExtras();
@@ -73,6 +79,7 @@ public class TweetActivity extends LoggedActivity {
             }
         }
 
+		// restoring state after pause
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("image")) {
                 attachedBitmap = savedInstanceState.getParcelable("image");
@@ -100,6 +107,9 @@ public class TweetActivity extends LoggedActivity {
         }
     }
 
+	/**
+	 * Binds form elements to local properties and fills them with data
+	 */
     private void initializeForm() {
         View content = (View) findViewById(android.R.id.content);
         if (content != null) {
@@ -187,16 +197,17 @@ public class TweetActivity extends LoggedActivity {
         }
     }
 
+	/**
+	 * Requests the image selection action to allow user to access gallery and select image
+	 */
     private void buttonGallery() {
-        // Intent intent = new Intent();
-        // intent.setType("image/*");
-        // intent.setAction(Intent.ACTION_GET_CONTENT);
-        // startActivityForResult(Intent.createChooser(intent,
-        // "Select Picture"), REQUEST_IMAGE_SELECT);
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_IMAGE_SELECT);
     }
 
+	/**
+	 * Requests for camera and redirection of the photo taken to the application
+	 */
     private void buttonCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -218,6 +229,12 @@ public class TweetActivity extends LoggedActivity {
         }
     }
 
+	/**
+	 * Creates temporaty image file
+	 * 
+	 * @return
+	 * @throws IOException 
+	 */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -320,35 +337,8 @@ public class TweetActivity extends LoggedActivity {
             cursor.close();
             attachedBitmap = decodeSampledBitmapFromPath(picturePath, MAX_PICTURE_SIZE, MAX_PICTURE_SIZE);
             imageView.setImageBitmap(attachedBitmap);
-            /*
-             * try { attachedImage =
-             * MediaStore.Images.Media.getBitmap(this.getContentResolver(),
-             * selectedImageUri); thumbnail.setImageBitmap(attachedImage); //
-             * setThumbnail(attachedImage); } catch (IOException ex) {
-             * Logger.getLogger(TweetActivity.class.getName()).log(Level.SEVERE,
-             * null, ex); }
-             */
         }
     }
-
-    /*
-     * private void setThumbnail(Bitmap imageBitmap) { if (imageView == null) {
-     * return; }
-     * 
-     * if (imageBitmap != null) { imageView.setImageBitmap(imageBitmap); if
-     * (imageView.getLayoutParams().width < imageView.getLayoutParams().height)
-     * { imageView.getLayoutParams().width = THUMBNAIL_SIZE;
-     * imageView.getLayoutParams().height = (int) ((float)
-     * imageBitmap.getHeight() * (THUMBNAIL_SIZE / (float)
-     * imageBitmap.getWidth())); } else if (imageView.getLayoutParams().width >
-     * imageView.getLayoutParams().height) { imageView.getLayoutParams().width =
-     * (int) ((float) imageBitmap.getWidth() * (THUMBNAIL_SIZE / (float)
-     * imageBitmap.getHeight())); imageView.getLayoutParams().height =
-     * THUMBNAIL_SIZE; } else { imageView.getLayoutParams().width =
-     * THUMBNAIL_SIZE; imageView.getLayoutParams().height = THUMBNAIL_SIZE; } }
-     * else { imageView.setImageBitmap(null); imageView.getLayoutParams().width
-     * = 0; imageView.getLayoutParams().height = 0; } }
-     */
 
     public void clearImage() {
         attachedBitmap = null;
@@ -385,6 +375,9 @@ public class TweetActivity extends LoggedActivity {
         }
     }
 
+	/**
+	 * Posts the tweet, redirects to timeline on success
+	 */
     private void saveTweet() {
         TweetPoster poster = new TweetPoster(twitter, null, tweet);
         if (attachedBitmap != null) {
