@@ -20,19 +20,21 @@ import java.net.URL;
 
 public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
 
-    private ImageView           view;
-    private ProgressBar         progressBar;
-    private URL                 url;
+    private ImageView                      view;
+    private ProgressBar                    progressBar;
+    private URL                            url;
     // maximum amount of device memory avalible for program use
-    protected static int maxMemory =  (int) (Runtime.getRuntime().maxMemory() / 1024);
+    protected static int                   maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
     // use 1/8 of the avalible memory for bitmap caching
-    // the use of LruCache prevents OutOfMemory exception causing application crash,
-    // because it frees oldest entry when the buffer size is reached 
-    protected static LruCache<URL, Bitmap> images = new LruCache<URL, Bitmap>(maxMemory / 8) {
-    	protected int sizeOf(URL key, Bitmap bitmap) {
-    		return bitmap.getByteCount() / 1024;
-    	}
-    };
+    // the use of LruCache prevents OutOfMemory exception causing application
+    // crash,
+    // because it frees oldest entry when the buffer size is reached
+    protected static LruCache<URL, Bitmap> images    = new LruCache<URL, Bitmap>(maxMemory / 8) {
+
+                                                         protected int sizeOf(URL key, Bitmap bitmap) {
+                                                             return bitmap.getByteCount() / 1024;
+                                                         }
+                                                     };
 
     public ImageLoader(ImageView view, ProgressBar progressBar, URL url) {
         this.view = view;
@@ -67,6 +69,6 @@ public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
         }
-        //view.setVisibility(View.VISIBLE);
+        // view.setVisibility(View.VISIBLE);
     }
 }
