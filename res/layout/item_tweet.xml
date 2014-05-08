@@ -78,6 +78,14 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:orientation="horizontal" >
+        
+        <cz.fit.gja.twitter.view.MapButton
+            android:id="@+id/tweet_map"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tweet_action_map"
+            android:onClick="showTweetOnMap" />
 
         <Button
             android:id="@+id/tweet_reply"

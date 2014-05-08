@@ -3,6 +3,8 @@ package cz.fit.gja.twitter;
 import cz.fit.gja.twitter.adapters.TweetAdapter;
 import cz.fit.gja.twitter.model.Retweet;
 import cz.fit.gja.twitter.model.SetFavoriteTweet;
+import cz.fit.gja.twitter.view.MapButton;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -100,6 +102,22 @@ public class TimelineActivity extends LoggedActivity {
     	view.setClickable(false);
     	new Retweet(view, tweetAdapter.getTwitter()).execute();
     }
+
+    /**
+     *	 
+     */
+    public void showTweetOnMap(View view) {
+    	MapButton mapButton = (MapButton) view;
+    	// start new activity displaying map according to data contained within the button
+    	Intent intent = new Intent(getApplicationContext(), TweetMapActivity.class);
+    	if (mapButton.getBounds() != null) {
+    		intent.putExtra("bounds",mapButton.getBounds());
+    	} else {
+    		intent.putExtra("coords", mapButton.getCoords());
+    	}
+    	startActivity(intent);
+    }
+    
 }
 
 
