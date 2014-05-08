@@ -1,7 +1,3 @@
-/*
- * AsyncTask for loading images on background
- */
-
 package cz.fit.gja.twitter.model;
 
 import android.graphics.Bitmap;
@@ -16,6 +12,9 @@ import android.widget.ProgressBar;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * AsyncTask for loading images on background
+ */
 public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
 
     private ImageView                      view;
@@ -61,6 +60,7 @@ public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap bitmap) {
+        // When image is ready...
         images.put(url, bitmap);
         view.setImageBitmap(bitmap);
         if (progressBar != null) {

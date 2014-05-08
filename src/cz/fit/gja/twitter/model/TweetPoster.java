@@ -27,13 +27,13 @@ public class TweetPoster {
         this.status = new StatusUpdate(text);
     }
 
-	/**
-	 * Sets given bitmap as an image to be attached to tweet
-	 * 
-	 * @param image
-	 * @param tempDirectory
-	 * @throws IOException 
-	 */
+    /**
+     * Sets given bitmap as an image to be attached to tweet
+     * 
+     * @param image
+     * @param tempDirectory
+     * @throws IOException
+     */
     public void setImage(Bitmap image, File tempDirectory) throws IOException {
         File file = null;
         try {
@@ -57,19 +57,20 @@ public class TweetPoster {
         }
     }
 
-	/**
-	 * If the tweet is a reply to someone mark it as such
-	 * @param id 
-	 */
+    /**
+     * If the tweet is a reply to someone mark it as such
+     * 
+     * @param id
+     */
     public void setIsReplyTo(long id) {
         this.status.setInReplyToStatusId(id);
     }
 
-	/**
-	 * Sends the update
-	 * 
-	 * @param handler 
-	 */
+    /**
+     * Sends the update
+     * 
+     * @param handler
+     */
     public void send(TweetActivity.OnTweetSubmitted handler) {
         final TweetActivity.OnTweetSubmitted callback = handler;
         (new Thread(new Runnable() {

@@ -13,9 +13,13 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+//import android.widget.ProgressBar;
 import android.widget.TextView;
 
+/**
+ * Activity of timeline. There is ListView with tweets.
+ * 
+ */
 public class TimelineActivity extends LoggedActivity {
 
     protected ListView       tweetList;
@@ -34,7 +38,8 @@ public class TimelineActivity extends LoggedActivity {
         // final ProgressBar progressBar = (ProgressBar)
         // currentView.findViewById(R.id.tweets_progressBar);
         final TextView empty = (TextView) currentView.findViewById(R.id.tweets_empty);
-		final ProgressBar pb = (ProgressBar) currentView.findViewById(R.id.progressBar);
+        // final ProgressBar pb = (ProgressBar)
+        // currentView.findViewById(R.id.progressBar);
         empty.setText(R.string.tweets_no_tweets);
         empty.setVisibility(View.GONE);
 
@@ -56,7 +61,6 @@ public class TimelineActivity extends LoggedActivity {
                 if (lastItem == totalItemCount && !tweetAdapter.isTimelineLoading() && lastItem >= INIT_TIMELINE_SIZE) {
                     tweetAdapter.loadMoreTimelineTweets();
                 }
-
             }
 
             @Override
@@ -109,7 +113,9 @@ public class TimelineActivity extends LoggedActivity {
     }
 
     /**
-     *	 
+     * Show map
+     * 
+     * @param view
      */
     public void showTweetOnMap(View view) {
         MapButton mapButton = (MapButton) view;

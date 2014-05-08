@@ -14,6 +14,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+/**
+ * Class, where user is already logged.
+ */
 abstract public class LoggedActivity extends BaseActivity {
 
     @Override
@@ -70,6 +73,9 @@ abstract public class LoggedActivity extends BaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Main menu definition
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

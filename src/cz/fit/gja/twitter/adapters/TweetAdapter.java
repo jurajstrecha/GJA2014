@@ -39,15 +39,16 @@ import cz.fit.gja.twitter.TweetActivity;
 
 public class TweetAdapter extends BaseAdapter {
 
-    protected Context                    context;
-    protected Twitter                     twitter;
-    protected LayoutInflater         layoutInflater;
-    private List<twitter4j.Status> statuses = new ArrayList<twitter4j.Status>();
-    // flag represents that there is a loading of next page of tweets in progress
-    private boolean					      loadingTimeline = false;
+    protected Context              context;
+    protected Twitter              twitter;
+    protected LayoutInflater       layoutInflater;
+    private List<twitter4j.Status> statuses        = new ArrayList<twitter4j.Status>();
+    // flag represents that there is a loading of next page of tweets in
+    // progress
+    private boolean                loadingTimeline = false;
     // number of tweet pages already loaded to the timeline
-    private int 					              pageCounter = 1;
-    
+    private int                    pageCounter     = 1;
+
     public TweetAdapter(Context context, Twitter twitter) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
@@ -55,14 +56,15 @@ public class TweetAdapter extends BaseAdapter {
 
         new LoadTimeline().execute();
     }
-    
+
     /**
-     * Return obtained twitter instance. Method is used for example by the Favorite button.
+     * Return obtained twitter instance. Method is used for example by the
+     * Favorite button.
      * 
      * @return twitter instance
      */
     public Twitter getTwitter() {
-    	return this.twitter;
+        return this.twitter;
     }
 
     /**
@@ -71,17 +73,17 @@ public class TweetAdapter extends BaseAdapter {
      * @return True if loading is in progress, false otherwise
      */
     public boolean isTimelineLoading() {
-    	return loadingTimeline;
+        return loadingTimeline;
     }
-    
+
     /**
-     * Asynchronously loads next page of tweets to the tweets list 
+     * Asynchronously loads next page of tweets to the tweets list
      * 
      */
     public void loadMoreTimelineTweets() {
-   		new LoadMoreTweets().execute();
+        new LoadMoreTweets().execute();
     }
-    
+
     @Override
     public int getCount() {
         return this.statuses.size();
@@ -124,13 +126,15 @@ public class TweetAdapter extends BaseAdapter {
 
         textView = (TextView) view.findViewById(R.id.tweet_text);
         if (textView != null) {
-        	// if the tweet text contains URL addresses, make them clickable and open them in a web browser
-        	textView.setMovementMethod(LinkMovementMethod.getInstance());
-        	String text = status.getText();
-        	if (text.contains("http://") || text.contains("https://")) {
-	          // replace plaintext URL with hyperlink surrounded by HTML marks for link
-              text = text.replaceAll("\\b((http|https)://[^\\s]+)\\b", "<a href=\"$1\">$1</a>");
-        	}
+            // if the tweet text contains URL addresses, make them clickable and
+            // open them in a web browser
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+            String text = status.getText();
+            if (text.contains("http://") || text.contains("https://")) {
+                // replace plaintext URL with hyperlink surrounded by HTML marks
+                // for link
+                text = text.replaceAll("\\b((http|https)://[^\\s]+)\\b", "<a href=\"$1\">$1</a>");
+            }
 
             // transform HTML formating to clickable text in text view
             textView.setText(Html.fromHtml(text));
@@ -147,7 +151,7 @@ public class TweetAdapter extends BaseAdapter {
                     new ImageLoader(imageView, null, url).execute();
                 }
             } catch (MalformedURLException e) {
-                //e.printStackTrace();
+                // e.printStackTrace();
                 Log.e("Wrong image url", e.getMessage());
             }
         }
@@ -193,29 +197,25 @@ public class TweetAdapter extends BaseAdapter {
         // the button
         mapButton = (MapButton) view.findViewById(R.id.tweet_map);
 
-       
+        // exact location data avalible, center the map camera to its position
+        if (status.getGeoLocation() != null) {
+            GeoLocation location = status.getGeoLocation();
+            mapButton.setBounds(null);
+            mapButton.setCoords(new double[] { location.getLatitude(), location.getLongitude() });
+            mapButton.setVisibility(View.VISIBLE);
 
-       	// exact location data avalible, center the map camera to its position 
-         if (status.getGeoLocation() != null) {
-        	GeoLocation location = status.getGeoLocation();
-        	mapButton.setBounds(null);
-        	mapButton.setCoords(new double[]{location.getLatitude(),location.getLongitude()});
-        	mapButton.setVisibility(View.VISIBLE);
-        	
-		// tweet contains bounding box coordinates, not the exact location
+            // tweet contains bounding box coordinates, not the exact location
         } else if (status.getPlace() != null) {
-        	GeoLocation boundries[] =  status.getPlace().getBoundingBoxCoordinates()[0];
-        	mapButton.setBounds(new double[]{boundries[0].getLatitude(),
-        			                                                    	  boundries[0].getLongitude(),
-        			                                                          boundries[2].getLatitude(),
-        			                                                    	  boundries[2].getLongitude()});
-        	mapButton.setCoords(null);
-        	mapButton.setVisibility(View.VISIBLE);
-		// no location data avalible, hide map button
-		} else {
-        	mapButton.setVisibility(View.GONE);
+            GeoLocation boundries[] = status.getPlace().getBoundingBoxCoordinates()[0];
+            mapButton.setBounds(new double[] { boundries[0].getLatitude(), boundries[0].getLongitude(), boundries[2].getLatitude(),
+                    boundries[2].getLongitude() });
+            mapButton.setCoords(null);
+            mapButton.setVisibility(View.VISIBLE);
+            // no location data avalible, hide map button
+        } else {
+            mapButton.setVisibility(View.GONE);
         }
-        
+
         button = (Button) view.findViewById(R.id.tweet_reply);
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -229,18 +229,21 @@ public class TweetAdapter extends BaseAdapter {
             }
         });
 
-        // set tweet ID and clickable status of the retweet button that belongs to the status
-        // if the status has already been retweeted, user won't be able to click button again
+        // set tweet ID and clickable status of the retweet button that belongs
+        // to the status
+        // if the status has already been retweeted, user won't be able to click
+        // button again
         idButton = (IdButton) view.findViewById(R.id.tweet_retweet);
         idButton.setTweetId(status.getId());
         idButton.setClickable(!status.isRetweeted());
         idButton.setChecked(status.isRetweeted());
-        
-        // set status and tweet ID of the tweet that belongs to the Favorite button
+
+        // set status and tweet ID of the tweet that belongs to the Favorite
+        // button
         idButton = (IdButton) view.findViewById(R.id.tweet_favorite);
         idButton.setTweetId(status.getId());
         idButton.setChecked(status.isFavorited());
-        
+
         return view;
     }
 
@@ -254,8 +257,6 @@ public class TweetAdapter extends BaseAdapter {
         return i;
     }
 
-    
-    
     /**
      * AsyncTask to load Timeline
      * */
@@ -265,7 +266,7 @@ public class TweetAdapter extends BaseAdapter {
          * Getting Timeline
          */
         protected List<twitter4j.Status> doInBackground(Void... args) {
-        	loadingTimeline = true;
+            loadingTimeline = true;
             List<twitter4j.Status> statuses = null;
             try {
                 statuses = twitter.getHomeTimeline();
@@ -285,36 +286,38 @@ public class TweetAdapter extends BaseAdapter {
             loadingTimeline = false;
         }
     }
-    
+
     /**
-     * Asynchronous load of new tweets to the timeline on scroll when the end of list is reached
-     *
+     * Asynchronous load of new tweets to the timeline on scroll when the end of
+     * list is reached
+     * 
      */
     private class LoadMoreTweets extends AsyncTask<Void, Void, List<twitter4j.Status>> {
-    	protected void onPreExecute() {
-    		if (isTimelineLoading())
-    			cancel(true);
-    		else
-    			loadingTimeline = true;
-    	}
-    	
-		@Override
-		protected List<twitter4j.Status> doInBackground(Void... arg0) {
+
+        protected void onPreExecute() {
+            if (isTimelineLoading())
+                cancel(true);
+            else
+                loadingTimeline = true;
+        }
+
+        @Override
+        protected List<twitter4j.Status> doInBackground(Void... arg0) {
             try {
                 return twitter.getHomeTimeline(new Paging(++pageCounter));
             } catch (TwitterException e) {
                 Log.d("Twitter getHomeTimeline Error", e.getMessage());
                 return null;
             }
-		}
-    	
-		protected void onPostExecute(List<twitter4j.Status> _statuses) {
-			if (_statuses != null) {
-				statuses.addAll(_statuses);
-				notifyDataSetChanged();
-				super.onPostExecute(_statuses);
-			}
-			loadingTimeline = false;
-		}
+        }
+
+        protected void onPostExecute(List<twitter4j.Status> _statuses) {
+            if (_statuses != null) {
+                statuses.addAll(_statuses);
+                notifyDataSetChanged();
+                super.onPostExecute(_statuses);
+            }
+            loadingTimeline = false;
+        }
     }
 }

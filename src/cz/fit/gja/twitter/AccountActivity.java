@@ -17,7 +17,8 @@ import twitter4j.TwitterException;
 import twitter4j.User;
 
 /**
- * Activity that handles displaying and modifying of the logged account's basic data
+ * Activity that handles displaying and modifying of the logged account's basic
+ * data
  * 
  * @author Nox
  */
@@ -37,10 +38,10 @@ public class AccountActivity extends LoggedActivity {
 
         initializeForm();
     }
-	
-	/**
-	 * Binds form elements to local properties and fills them with data
-	 */
+
+    /**
+     * Binds form elements to local properties and fills them with data
+     */
     private void initializeForm() {
         View currentView = this.findViewById(android.R.id.content);
 
@@ -62,11 +63,11 @@ public class AccountActivity extends LoggedActivity {
         description.setText(accountData.get("description"), TextView.BufferType.NORMAL);
     }
 
-	/**
-	 * Fetches and returns user data based on userId
-	 * 
-	 * @return 
-	 */
+    /**
+     * Fetches and returns user data based on userId
+     * 
+     * @return
+     */
     private Map<String, String> getAccountData() {
         if (userId == null) {
             Toast.makeText(this, getString(R.string.account_msg_fetch_failed), Toast.LENGTH_LONG).show();
@@ -90,13 +91,13 @@ public class AccountActivity extends LoggedActivity {
         return accountData;
 
     }
-	
-	/**
-	 * Adds save button
-	 * 
-	 * @param menu
-	 * @return 
-	 */
+
+    /**
+     * Adds save button
+     * 
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -104,12 +105,12 @@ public class AccountActivity extends LoggedActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-	/**
-	 * Handles issuing save button action
-	 * 
-	 * @param item
-	 * @return 
-	 */
+    /**
+     * Handles issuing save button action
+     * 
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -121,11 +122,11 @@ public class AccountActivity extends LoggedActivity {
         }
     }
 
-	/**
-	 * Updates account data based on current form values
-	 * 
-	 * Redirects to timeline on success
-	 */
+    /**
+     * Updates account data based on current form values
+     * 
+     * Redirects to timeline on success
+     */
     private void submit() {
         try {
             twitter.updateProfile(name.getText().toString(), website.getText().toString(), location.getText().toString(), description.getText()
