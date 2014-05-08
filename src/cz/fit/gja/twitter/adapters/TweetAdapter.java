@@ -193,8 +193,17 @@ public class TweetAdapter extends BaseAdapter {
         // the button
         mapButton = (MapButton) view.findViewById(R.id.tweet_map);
 
-        // tweet contains bounding box coordinates, not the exact location
-        if (status.getPlace() != null) {
+       
+
+       	// exact location data avalible, center the map camera to its position 
+         if (status.getGeoLocation() != null) {
+        	GeoLocation location = status.getGeoLocation();
+        	mapButton.setBounds(null);
+        	mapButton.setCoords(new double[]{location.getLatitude(),location.getLongitude()});
+        	mapButton.setVisibility(View.VISIBLE);
+        	
+		// tweet contains bounding box coordinates, not the exact location
+        } else if (status.getPlace() != null) {
         	GeoLocation boundries[] =  status.getPlace().getBoundingBoxCoordinates()[0];
         	mapButton.setBounds(new double[]{boundries[0].getLatitude(),
         			                                                    	  boundries[0].getLongitude(),
@@ -202,16 +211,8 @@ public class TweetAdapter extends BaseAdapter {
         			                                                    	  boundries[2].getLongitude()});
         	mapButton.setCoords(null);
         	mapButton.setVisibility(View.VISIBLE);
-
-       	// exact location data avalible, center the map camera to its position  
-        } else if (status.getGeoLocation() != null) {
-        	GeoLocation location = status.getGeoLocation();
-        	mapButton.setBounds(null);
-        	mapButton.setCoords(new double[]{location.getLatitude(),location.getLongitude()});
-        	mapButton.setVisibility(View.VISIBLE);
-        	
-        // no location data avalible, hide map button
-        } else {
+		// no location data avalible, hide map button
+		} else {
         	mapButton.setVisibility(View.GONE);
         }
         

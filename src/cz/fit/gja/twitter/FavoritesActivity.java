@@ -7,6 +7,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.ProgressBar;
 import cz.fit.gja.twitter.adapters.FavoritesAdapter;
 
 public class FavoritesActivity extends TimelineActivity {
@@ -25,7 +26,7 @@ public class FavoritesActivity extends TimelineActivity {
         //final ProgressBar progressBar = (ProgressBar) currentView.findViewById(R.id.tweets_progressBar);
         final TextView empty = (TextView) currentView.findViewById(R.id.tweets_empty);
         empty.setText(R.string.tweets_no_tweets);
-        //empty.setVisibility(View.GONE);
+        empty.setVisibility(View.GONE);
 
         tweetList = (ListView) currentView.findViewById(R.id.tweets);
         tweetList.setScrollContainer(false);
@@ -70,6 +71,9 @@ public class FavoritesActivity extends TimelineActivity {
     		empty.setVisibility(View.VISIBLE);
     	else
     		empty.setVisibility(View.GONE);
+		
+		final ProgressBar pb = (ProgressBar) currentView.findViewById(R.id.progressBar);
+		pb.setVisibility(View.GONE);
     }
     
     
