@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TimelineActivity extends LoggedActivity {
@@ -33,6 +34,7 @@ public class TimelineActivity extends LoggedActivity {
         // final ProgressBar progressBar = (ProgressBar)
         // currentView.findViewById(R.id.tweets_progressBar);
         final TextView empty = (TextView) currentView.findViewById(R.id.tweets_empty);
+		final ProgressBar pb = (ProgressBar) currentView.findViewById(R.id.progressBar);
         empty.setText(R.string.tweets_no_tweets);
         empty.setVisibility(View.GONE);
 

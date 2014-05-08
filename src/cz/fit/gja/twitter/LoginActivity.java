@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Activity for intro screen for logging into Twitter
+ */
 public class LoginActivity extends BaseActivity {
 
     @Override
